@@ -31,8 +31,8 @@ svg text{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif
 </style>
 </head>
 <body>
-<style>#gate{position:fixed;inset:0;background:#141414;color:#f2f2f2;display:flex;align-items:center;justify-content:center;z-index:9999;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#gate form{background:#1e1e1e;padding:28px 32px;border-radius:12px;border:1px solid #333;text-align:center;max-width:360px}#gate input{font-size:18px;padding:10px;border-radius:8px;border:1px solid #444;background:#151515;color:#fff;width:100%;box-sizing:border-box;margin:14px 0}#gate button{font-size:16px;padding:10px 18px;border-radius:8px;border:0;background:#3987e5;color:#fff;cursor:pointer}#gate p{color:#b5b5b5;margin:6px 0 0;font-size:13px}</style>
-<div id="gate"><form id="gateform"><div style="font-size:20px;font-weight:600">Cambridge Kinematics</div><p>Test area. Enter the passcode to continue.</p><input id="gatepw" type="password" autocomplete="off" autofocus placeholder="passcode"><button type="submit">Continue</button><p id="gatemsg"></p></form></div>
+<style>#gate{position:fixed;inset:0;background:#0b1220;color:#eef2f7;display:flex;align-items:center;justify-content:center;z-index:9999;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#gate form{background:#121c2e;padding:28px 32px;border-radius:14px;border:1px solid rgba(255,255,255,.12);text-align:center;max-width:360px}#gate input{font-size:18px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b1220;color:#fff;width:100%;box-sizing:border-box;margin:14px 0}#gate button{font-size:16px;padding:10px 18px;border-radius:10px;border:0;background:#1f5fa8;color:#fff;cursor:pointer}#gate p{color:#9aa6b8;margin:6px 0 0;font-size:13px}</style>
+<div id="gate"><form id="gateform"><div style="font-size:20px;font-weight:600">Cambridge Kinematics</div><p>Knee Recovery test area. Enter the passcode to continue.</p><input id="gatepw" type="password" autocomplete="off" autofocus placeholder="passcode"><button type="submit">Continue</button><p id="gatemsg"></p></form></div>
 <script>
 (function(){const H="b3b19dc58f7aa6e1e21f819f544aa074e3d03fcc0718560ba62877058c462f41";const g=document.getElementById("gate");
 async function sha(s){const b=new TextEncoder().encode(s);const d=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -62,7 +62,7 @@ function render() {
   const cur = $("pid").value && pids.includes($("pid").value) ? $("pid").value : pids[0];
   $("pid").innerHTML = pids.map(p => `<option ${p === cur ? "selected" : ""}>${esc(p)}</option>`).join("");
   const rs = recs.filter(r => r.patient_id === cur).sort((a, b) => a.started_at.localeCompare(b.started_at));
-  if (!rs.length) { $("out").innerHTML = "<p class='muted'>No sessions yet. Record one in index.html or add session.json files.</p>"; return; }
+  if (!rs.length) { $("out").innerHTML = "<p class='muted'>No sessions yet. Record one in <a href='index.html'>the patient app</a> or <a href='bench.html'>the bench page</a>, or add session.json files.</p>"; return; }
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const op = rs.find(r => r.operation_date)?.operation_date;
   let h = `<p class="sub">operation ${esc(op) || "not set"}${op ? " · day " + Math.floor((today - new Date(op)) / 864e5) + " today" : ""} · ${rs.length} session(s)</p>`;
@@ -71,9 +71,21 @@ function render() {
   h += `<h2>Recovery curve</h2>${curve(rs)}`;
   h += `<h2>Sessions</h2><div style="overflow-x:auto"><table><thead><tr><th>started</th><th>day</th><th>exercise</th><th>reps</th><th>tempo</th><th>active</th><th>peak flex</th><th>extension</th><th>above target</th><th>pain</th><th>difficulty</th></tr></thead><tbody>`;
   for (const r of [...rs].reverse()) { const m = r.measurement, mo = r.monitoring, p = r.patient;
-    h += `<tr><td>${esc(r.started_at.replace("T", " ").slice(0, 16))}</td><td class="n">${esc(r.days_post_op)}</td><td>${esc(r.exercise)}</td><td class="n">${mo.repetitions}${r.prescribed_reps ? "/" + r.prescribed_reps : ""} ${mo.early_stop ? '<span class="pill warn">early stop</span>' : ""}</td><td class="n">${mo.tempo_s_per_rep ? mo.tempo_s_per_rep.toFixed(1) + " s" : ""}</td><td class="n">${Math.round(mo.active_fraction * 100)}%</td><td class="n">${m.p95_flexion_deg ?? ""}</td><td class="n">${m.p05_extension_deg ?? ""}</td><td class="n">${m.time_above_target_s} s</td><td class="n">${p.pain_0_10 === null ? "" : p.pain_0_10 >= PAIN_FLAG ? `<span class="pill bad">${p.pain_0_10}</span>` : p.pain_0_10}</td><td class="n">${esc(p.difficulty_1_5)}</td></tr>`; }
-  h += `</tbody></table></div><p class="note">Repetitions are counted from pixel motion in a separate layer and are not attached to the angle. The angle traces and videos are in the downloaded files; watch the video to judge how a repetition was done.</p>`;
+    h += `<tr><td>${esc(r.started_at.replace("T", " ").slice(0, 16))}</td><td class="n">${esc(r.days_post_op)}</td><td>${esc(r.exercise).replace(/_/g, " ")}</td><td class="n">${r.hold ? `${r.hold.cycles_completed}${r.prescribed_reps ? "/" + r.prescribed_reps : ""} <span class="pill" title="timed holds of ${r.hold.hold_s} s; the count is timer cycles, not movement">holds</span>` : `${mo.repetitions}${r.prescribed_reps ? "/" + r.prescribed_reps : ""}`} ${mo.early_stop ? '<span class="pill warn">early stop</span>' : ""}</td><td class="n">${mo.tempo_s_per_rep ? mo.tempo_s_per_rep.toFixed(1) + " s" : ""}</td><td class="n">${Math.round(mo.active_fraction * 100)}%</td><td class="n">${m.p95_flexion_deg ?? ""}</td><td class="n">${m.p05_extension_deg ?? ""}</td><td class="n">${m.time_above_target_s} s</td><td class="n">${p.pain_0_10 === null ? "" : p.pain_0_10 >= PAIN_FLAG ? `<span class="pill bad">${p.pain_0_10}</span>` : p.pain_0_10}</td><td class="n">${esc(p.difficulty_1_5)}</td></tr>`; }
+  h += `</tbody></table></div><p class="note">Repetitions are counted from pixel motion in a separate layer and are not attached to the angle. Watch the video to judge how a repetition was done.</p>`;
+  h += `<h2>Knee angle across each session</h2>`;
+  for (const r of [...rs].reverse().slice(0, 12)) { const tp = r.measurement.trace_preview; h += `<div class="muted" style="margin-top:14px">${esc(r.started_at.replace("T", " ").slice(0, 16))} · day ${esc(r.days_post_op)} · ${esc(r.exercise).replace(/_/g, " ")} · ${r.hold ? `${r.hold.cycles_completed} timed holds` : `${r.monitoring.repetitions} reps (counted separately from pixel motion)`}</div>` + (tp ? traceSvg(tp, r.duration_s) : `<div class="muted">no angle trace stored for this session</div>`); }
   $("out").innerHTML = h;
+}
+function traceSvg(tp, duration) {
+  const vals = tp.flexion_deg, hz = tp.hz || 4, tmax = Math.max(1, duration || vals.length / hz);
+  const w = 760, h = 160, L = 40, R = 12, T = 10, B = 26, pw = w - L - R, ph = h - T - B, ymax = 140;
+  const X = i => L + pw * (i / hz) / tmax, Y = v => T + ph * (1 - Math.min(ymax, Math.max(0, v)) / ymax);
+  let g = ""; for (let v = 0; v <= ymax; v += 40) g += `<line x1="${L}" x2="${w - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e4e3df"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+  const step = tmax > 120 ? 30 : tmax > 40 ? 10 : 5; for (let t = 0; t <= tmax; t += step) g += `<text x="${L + pw * t / tmax}" y="${h - 8}" text-anchor="middle">${t}</text>`;
+  const segs = []; let cur = []; vals.forEach((v, i) => { if (v === null) { if (cur.length) { segs.push(cur); cur = []; } return; } cur.push(`${X(i).toFixed(1)},${Y(v).toFixed(1)}`); }); if (cur.length) segs.push(cur);
+  if (!segs.length) return "<div class='muted'>leg not found in this session</div>";
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="knee angle across the session" style="max-width:100%">${g}${segs.map(s => `<polyline fill="none" stroke="var(--s1)" stroke-width="1.5" points="${s.join(" ")}"/>`).join("")}<text x="${w - R}" y="${h - 8}" text-anchor="end">s</text></svg>`;
 }
 function flags(rs, today) {
   const out = [], last = rs[rs.length - 1], lastDay = new Date(last.started_at.slice(0, 10)), gap = Math.floor((today - lastDay) / 864e5);

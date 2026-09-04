@@ -3,55 +3,178 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Knee Recovery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f2ec">
+<title>Knee Recovery · Cambridge Kinematics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#141414;--panel:#1e1e1e;--ink:#f2f2f2;--ink2:#b5b5b5;--line:#333;--green:#2fd05a;--amber:#ffa02e;--blue:#3987e5;--red:#e66767}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-header{display:flex;align-items:center;gap:16px;padding:10px 16px;border-bottom:1px solid var(--line)}
-header h1{font-size:17px;margin:0;font-weight:600}
-header .sp{flex:1}
-button{background:#2b2b2b;color:var(--ink);border:1px solid #444;border-radius:8px;padding:8px 14px;font-size:15px;cursor:pointer}
-button.primary{background:var(--blue);border-color:var(--blue)}
-button.stop{background:#8a2b2b;border-color:#8a2b2b}
-button:disabled{opacity:.4;cursor:default}
-main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0;height:calc(100vh - 53px)}
-#stage{position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#stage video{display:none}
-#stage canvas{max-width:100%;max-height:100%}
-#stage .big{position:absolute;left:0;right:0;top:0;padding:14px 20px;display:flex;align-items:baseline;gap:18px;background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,0));pointer-events:none}
-#reps{font-size:64px;font-weight:700;color:var(--green);line-height:1}
-#reps + span{color:var(--ink2);font-size:18px}
-#clock{font-size:40px;font-weight:600;margin-left:auto}
-#leg{position:absolute;right:20px;top:86px;font-size:15px;color:var(--amber);pointer-events:none}
-#leg.ok{color:var(--green)}
-#angle{position:absolute;left:20px;top:100px;font-size:46px;font-weight:700;color:var(--amber);display:none;pointer-events:none}
-#angle small{font-size:14px;color:var(--ink2);font-weight:400;margin-left:8px}
-#state{position:absolute;left:0;right:0;bottom:0;padding:14px 20px;font-size:22px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.8));pointer-events:none}
-#rec{position:absolute;right:20px;top:62px;width:12px;height:12px;border-radius:50%;background:var(--red);display:none}
-aside{background:var(--panel);border-left:1px solid var(--line);padding:16px;overflow:auto}
-aside h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin:18px 0 8px}
-aside h2:first-child{margin-top:0}
-label{display:block;font-size:13px;color:var(--ink2);margin:8px 0 3px}
-input,select{width:100%;background:#151515;color:var(--ink);border:1px solid #444;border-radius:6px;padding:7px 9px;font-size:15px}
-.row{display:flex;gap:8px}.row>*{flex:1}
-.check{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px}
-.check input{width:auto}
-#log{font-size:12px;color:var(--ink2);white-space:pre-wrap;margin-top:12px;max-height:160px;overflow:auto}
-#overlay{position:absolute;inset:0;background:rgba(10,10,10,.96);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px;text-align:center}
-#overlay h2{font-size:34px;margin:0}
-#overlay p{font-size:20px;color:var(--ink2);margin:0}
-.scale{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.scale button{min-width:52px;font-size:20px;padding:12px 0}
-#done a{color:var(--blue)}
-.small{font-size:12px;color:var(--ink2)}
-#rules{font-size:12px;color:var(--ink2);border-top:1px solid var(--line);margin-top:18px;padding-top:10px}
+:root{
+  --paper:#f5f2ec;--paper2:#ebe6dc;--bone:#fbf9f5;--line:#d9d2c5;--ink:#101c2b;--muted:#6b6a64;
+  --brand:#1f5fa8;--brand-deep:#174a84;--brand-soft:#e3edf9;--go:#2a9d6a;--go-soft:#dff1e7;--warn:#b8860b;--warn-soft:#fbf1d6;
+  --dk:#0b1220;--dk2:#121c2e;--dk3:#1a2740;--dkline:rgba(255,255,255,.12);--dkink:#eef2f7;--dkmuted:#9aa6b8;--green:#3ddc84;--amber:#f2b134;--red:#ff6b6b;
+  --r:18px;--shadow:0 12px 32px -14px rgba(16,28,43,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.display{font-family:"Newsreader","Georgia",serif;font-weight:600;letter-spacing:-.015em;line-height:1.05}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-deep)}
+.num{font-variant-numeric:tabular-nums}
+button{font-family:inherit}
+a{color:var(--brand-deep)}
+
+/* ---------- home ---------- */
+#home{max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 24px) 20px 80px}
+.brandbar{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.brandbar svg{width:38px;height:38px;flex:0 0 auto}
+.brandbar b{font-size:14px;font-weight:700;display:block}
+.brandbar span{font-size:12px;color:var(--muted);display:block;margin-top:1px;letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-size:clamp(36px,10vw,48px);margin:0 0 14px}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero p{font-size:15.5px;color:var(--muted);margin:0;max-width:36ch}
+.card{background:var(--bone);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.details{margin-top:28px}
+.details h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.f{display:block;font-size:12px;color:var(--muted);font-weight:600}
+label.f input,label.f select{display:block;width:100%;margin-top:4px;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+.dayline{margin-top:12px;font-size:13px;color:var(--muted)}
+.dayline b{color:var(--ink)}
+.toggles{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 14px}
+.toggles label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+details.more{margin-top:10px;font-size:12.5px;color:var(--muted)}
+details.more summary{cursor:pointer;font-weight:600}
+.phasepick{margin:30px 0 8px}
+.phasepick .eyebrow{display:block;margin-bottom:10px}
+.seg{display:flex;background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);padding:10px 4px;border-radius:10px;cursor:pointer;transition:.15s}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bone);box-shadow:var(--shadow)}
+.list{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+.ex-card{background:var(--bone);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;text-align:left;width:100%;transition:.15s}
+.ex-card:active{transform:scale(.985)}
+.ex-card::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brand)}
+.ex-card .ic{width:48px;height:48px;flex:0 0 auto;border-radius:12px;background:var(--brand-soft);display:grid;place-items:center}
+.ex-card .ic svg{width:26px;height:26px;stroke:var(--brand-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ex-card h3{margin:0 0 2px;font-size:16px;font-weight:650}
+.ex-card p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.35}
+.ex-card .meta{margin:4px 0 0;font-size:12px;color:var(--brand-deep);font-weight:600}
+.ex-card .tag{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--brand-deep);background:var(--brand-soft);padding:5px 8px;border-radius:7px;white-space:nowrap;align-self:flex-start}
+.progress{margin-top:26px}
+.progress h2{font-size:13px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.progress p{margin:0;font-size:13.5px;color:var(--muted)}
+.progress .stats{display:flex;gap:18px;margin:8px 0 10px}
+.progress .stats div{font-size:12px;color:var(--muted)}
+.progress .stats b{display:block;font-size:24px;color:var(--ink);font-family:"Newsreader","Georgia",serif;font-weight:600;line-height:1.1}
+.linkbtn{display:inline-block;background:var(--ink);color:var(--bone);text-decoration:none;font-weight:600;font-size:13.5px;padding:10px 16px;border-radius:11px}
+.safety{margin:26px 0 0;padding:16px;background:var(--warn-soft);border:1px solid #ecdcbf;border-radius:14px;font-size:12.5px;color:#6b5418}
+.safety b{color:#4e3d0f}
+.foot{margin-top:26px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.foot a{color:var(--muted)}
+
+/* ---------- exercise screen ---------- */
+#ex{position:fixed;inset:0;background:var(--dk);color:var(--dkink);z-index:20;display:none;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:100%}
+#ex.open{display:grid}
+.stage{position:relative;background:#050a14;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:0}
+.stage video{display:none}
+.stage canvas{max-width:100%;max-height:100%;display:block}
+.stage .top{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top) + 12px) 16px 28px;display:flex;align-items:flex-start;gap:12px;background:linear-gradient(180deg,rgba(5,10,20,.85),rgba(5,10,20,0));pointer-events:none}
+.stage .top>*{pointer-events:auto}
+.iconbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--dkline);background:rgba(255,255,255,.1);color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center;flex:0 0 auto;line-height:1}
+.stage .title{flex:1;min-width:0}
+.stage .title .eyebrow{color:#9fc4f0}
+.stage .title h2{margin:2px 0 0;font-size:18px;font-weight:600;font-family:"Newsreader","Georgia",serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage .clockwrap{display:flex;align-items:center;gap:8px;align-self:center;font-size:13px;font-weight:600;padding:7px 11px;border-radius:9px;background:rgba(5,10,20,.65);border:1px solid var(--dkline);color:var(--dkmuted)}
+.stage .rec{display:none;width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+.stage .rec.on{display:inline-block}
+@keyframes blink{50%{opacity:.25}}
+.stage .track{position:absolute;left:16px;right:16px;bottom:16px;width:max-content;max-width:calc(100% - 32px);font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:9px;background:rgba(5,10,20,.65);border:1px solid var(--dkline);color:var(--amber);display:flex;align-items:center;gap:7px}
+.stage .track::before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:currentColor}
+.stage .track.ok{color:var(--green)}
+.stage .track.off{color:var(--dkmuted)}
+
+.panel{background:var(--dk2);border-left:1px solid var(--dkline);padding:18px 18px calc(env(safe-area-inset-bottom) + 18px);display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0}
+.tile{background:var(--dk3);border:1px solid var(--dkline);border-radius:14px;padding:12px 14px}
+.tile .lab{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dkmuted)}
+.tile .val{font-family:"Newsreader","Georgia",serif;font-weight:600;font-size:44px;line-height:1;margin-top:6px}
+.tile .val small{font-size:18px;color:var(--dkmuted);font-weight:500;margin-left:2px}
+.tile .sub{font-size:12px;color:var(--dkmuted);margin-top:6px}
+.tile .sub b{color:var(--dkink);font-weight:600}
+.tile.reps .val{color:var(--green)}
+.tile.angle.inzone{border-color:rgba(61,220,132,.5);background:rgba(42,157,106,.22)}
+.bar{position:relative;height:8px;border-radius:5px;background:rgba(255,255,255,.12);margin-top:10px;overflow:visible}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--brand);width:0;transition:width .12s}
+.bar .zone{position:absolute;top:0;bottom:0;background:rgba(61,220,132,.35);border-left:2px solid var(--green)}
+.bar .tick{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--green)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile.instr ol{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--dkink);line-height:1.45}
+.tile.instr li{margin-bottom:5px}
+.tile.hold .ring{display:flex;align-items:center;gap:14px;margin-top:6px}
+.tile.hold .cue{font-family:"Newsreader","Georgia",serif;font-size:30px;font-weight:600;line-height:1}
+.tile.hold .count{font-size:44px;font-family:"Newsreader","Georgia",serif;font-weight:600;color:var(--amber);min-width:56px;text-align:right}
+.tile.hold.on .count{color:var(--green)}
+.panel .status{font-size:13.5px;line-height:1.4;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--dkline);color:var(--dkink)}
+.panel .status.ok{background:rgba(42,157,106,.2);border-color:rgba(61,220,132,.45)}
+.panel .actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+.btn{border:1px solid var(--dkline);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-weight:600;padding:12px 16px;border-radius:12px;cursor:pointer}
+.btn.primary{background:var(--brand);border-color:var(--brand)}
+.btn.finish{background:var(--green);border-color:var(--green);color:#06261a;flex:1}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.small{font-size:12.5px;padding:9px 12px}
+
+/* veil, brief, done */
+.veil{position:absolute;inset:0;z-index:8;background:var(--dk);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;gap:8px}
+.veil.hide{display:none}
+.veil .spin{width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:var(--brand);animation:spin 1s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.veil h3{font-family:"Newsreader","Georgia",serif;font-size:22px;margin:0;font-weight:600}
+.veil p{color:var(--dkmuted);font-size:14px;margin:4px 0 0;max-width:34ch}
+.veil .small{font-size:11.5px;color:var(--dkmuted);opacity:.7;margin-top:14px}
+.brief{position:absolute;z-index:7;left:0;right:0;bottom:0;background:var(--bone);color:var(--ink);border-radius:22px 22px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom) + 18px);box-shadow:0 -10px 40px -10px rgba(0,0,0,.6);transform:translateY(105%);transition:transform .3s ease;max-height:80%;overflow:auto}
+.brief.up{transform:none}
+.brief .grip{width:38px;height:4px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.brief h3{margin:0 0 2px;font-family:"Newsreader","Georgia",serif;font-size:22px;font-weight:600}
+.brief .meta{font-size:12.5px;color:var(--brand-deep);font-weight:600;margin-bottom:12px}
+.brief ol{margin:0 0 12px;padding-left:20px}
+.brief ol li{font-size:13.5px;line-height:1.5;margin-bottom:6px}
+.brief .setup{font-size:12.5px;color:var(--muted);background:var(--paper2);border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.brief .start{width:100%;background:var(--ink);color:var(--bone);border:none;font-size:16px;font-weight:650;padding:15px;border-radius:14px;cursor:pointer}
+.brief .start:disabled{opacity:.5}
+.done{position:fixed;inset:0;z-index:30;background:rgba(11,18,32,.97);display:none;overflow:auto;padding:26px 20px}
+.done.show{display:block}
+.done .inner{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px}
+.done h2{font-family:"Newsreader","Georgia",serif;font-size:30px;margin:0;font-weight:600}
+.done p{color:var(--dkmuted);font-size:15px;margin:0;max-width:40ch}
+.done .stats{display:flex;gap:26px;margin:10px 0 4px;flex-wrap:wrap;justify-content:center}
+.done .stats div{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dkmuted);font-weight:700}
+.done .stats b{display:block;font-family:"Newsreader","Georgia",serif;font-size:38px;font-weight:600;color:#fff;letter-spacing:0;text-transform:none;line-height:1.1}
+.done .chart{width:min(760px,92vw);margin:6px 0 4px}
+.done .chart svg{width:100%;height:auto;border-radius:10px}
+.done .q h3{font-family:"Newsreader","Georgia",serif;font-size:24px;margin:8px 0 2px;font-weight:600}
+.done .scale{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.done .scale button{min-width:52px;font-size:20px;padding:12px 0;border-radius:12px;border:1px solid var(--dkline);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+.done .scale button:hover{background:var(--brand)}
+.done .skip{background:none;border:none;color:var(--dkmuted);font-size:13px;margin-top:10px;cursor:pointer;text-decoration:underline}
+.done .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.done .row a{display:inline-block;text-decoration:none;color:#fff;font-weight:600;font-size:14px;padding:12px 18px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid var(--dkline)}
+.done .ring{width:84px;height:84px;border-radius:50%;border:4px solid var(--green);display:grid;place-items:center;margin-bottom:6px}
+.done .ring svg{width:40px;height:40px;stroke:var(--green);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+/* narrow screens: video on top, panel below */
+@media (max-width:879px), (orientation:portrait){
+  #ex.open{display:flex;flex-direction:column}
+  .stage{flex:1 1 auto;min-height:38vh}
+  .panel{border-left:none;border-top:1px solid var(--dkline);padding:12px 14px calc(env(safe-area-inset-bottom) + 12px);gap:10px;max-height:52vh}
+  .tile .val{font-size:34px}
+  .tile.instr{display:none}
+  .panel .actions .btn{padding:11px 12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<style>#gate{position:fixed;inset:0;background:#141414;color:#f2f2f2;display:flex;align-items:center;justify-content:center;z-index:9999;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#gate form{background:#1e1e1e;padding:28px 32px;border-radius:12px;border:1px solid #333;text-align:center;max-width:360px}#gate input{font-size:18px;padding:10px;border-radius:8px;border:1px solid #444;background:#151515;color:#fff;width:100%;box-sizing:border-box;margin:14px 0}#gate button{font-size:16px;padding:10px 18px;border-radius:8px;border:0;background:#3987e5;color:#fff;cursor:pointer}#gate p{color:#b5b5b5;margin:6px 0 0;font-size:13px}</style>
-<div id="gate"><form id="gateform"><div style="font-size:20px;font-weight:600">Cambridge Kinematics</div><p>Test area. Enter the passcode to continue.</p><input id="gatepw" type="password" autocomplete="off" autofocus placeholder="passcode"><button type="submit">Continue</button><p id="gatemsg"></p></form></div>
+<style>#gate{position:fixed;inset:0;background:#0b1220;color:#eef2f7;display:flex;align-items:center;justify-content:center;z-index:9999;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#gate form{background:#121c2e;padding:28px 32px;border-radius:14px;border:1px solid rgba(255,255,255,.12);text-align:center;max-width:360px}#gate input{font-size:18px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b1220;color:#fff;width:100%;box-sizing:border-box;margin:14px 0}#gate button{font-size:16px;padding:10px 18px;border-radius:10px;border:0;background:#1f5fa8;color:#fff;cursor:pointer}#gate p{color:#9aa6b8;margin:6px 0 0;font-size:13px}</style>
+<div id="gate"><form id="gateform"><div style="font-size:20px;font-weight:600">Cambridge Kinematics</div><p>Knee Recovery test area. Enter the passcode to continue.</p><input id="gatepw" type="password" autocomplete="off" autofocus placeholder="passcode"><button type="submit">Continue</button><p id="gatemsg"></p></form></div>
 <script>
 (function(){const H="b3b19dc58f7aa6e1e21f819f544aa074e3d03fcc0718560ba62877058c462f41";const g=document.getElementById("gate");
 async function sha(s){const b=new TextEncoder().encode(s);const d=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -61,305 +184,360 @@ if(h===H){try{localStorage.setItem("kr_gate",H);}catch(e){}g.remove();}else{docu
 })();
 </script>
 
-<header>
-  <h1>Knee Recovery</h1>
-  <span class="small" id="status">loading pose model…</span>
-  <span class="sp"></span>
-  <button id="start" class="primary" disabled>Start session</button>
-  <button id="finish" class="stop" disabled>Finish (q)</button>
-  <button id="box" disabled title="draw the counting box: drag on the picture">Box (r)</button>
-  <button id="reset" disabled>Reset count</button>
-</header>
-<main>
-  <div id="stage">
-    <video id="video" playsinline muted></video>
-    <canvas id="canvas"></canvas>
-    <div class="big"><span id="reps">0</span><span>reps</span><span id="clock">00:00</span></div>
-    <div id="rec"></div>
-    <div id="leg">camera off</div>
-    <div id="angle">--<small>deg flexion, 0 = straight</small></div>
-    <div id="state"></div>
-    <div id="overlay">
-      <div id="ov-summary"></div>
-      <div id="ov-q" style="display:none">
-        <h2 id="ov-title"></h2><p id="ov-prompt"></p>
-        <div class="scale" id="ov-scale"></div>
-        <p><button id="ov-skip">skip</button></p>
-      </div>
-      <div id="done" style="display:none">
-        <h2>Saved</h2>
-        <p id="done-text"></p>
-        <p><button id="again" class="primary">New session</button></p>
-      </div>
-    </div>
+
+<!-- ===================== HOME ===================== -->
+<main id="home">
+  <div class="brandbar">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#1f5fa8"/><path d="M13 11v18M13 20l8 6M13 20l9-7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="13" cy="20" r="2.4" fill="#fff"/></svg>
+    <div><b>Cambridge Kinematics</b><span>Knee Recovery</span></div>
   </div>
-  <aside>
-    <h2>Patient</h2>
-    <label>Patient id<input id="patient" value="P001"></label>
-    <label>Operation date<input id="opdate" type="date"></label>
-    <label>Exercise<select id="exercise">
-      <option value="heel_slide">heel slide</option>
-      <option value="seated_extension">seated extension</option>
-      <option value="straight_leg_raise">straight leg raise</option>
-      <option value="standing_flexion">standing knee bend</option>
-    </select></label>
-    <div class="row">
-      <label>Prescribed reps<input id="presc" type="number" value="10" min="0"></label>
-      <label>Target flexion<input id="target" type="number" value="90" min="0" max="160"></label>
+
+  <section class="hero">
+    <h1 class="display">Your knee,<br><em>day by day.</em></h1>
+    <p>Your camera counts each repetition and measures how far your knee bends, so your physiotherapist can see how the recovery is going. Nothing leaves this device.</p>
+  </section>
+
+  <section class="card details">
+    <h2>Your details</h2>
+    <div class="grid2">
+      <label class="f">Patient id<input id="patient" value="P001" autocomplete="off"></label>
+      <label class="f">Operation date<input id="opdate" type="date"></label>
     </div>
-    <label>Leg<select id="side"><option value="auto">auto (more visible)</option><option value="left">left</option><option value="right">right</option></select></label>
-    <label class="check"><input type="checkbox" id="skeleton" checked> Skeleton overlay: all MediaPipe landmarks on the video</label>
-    <label class="check"><input type="checkbox" id="bench"> Bench view: hip, knee, ankle and live angle (not for patients)</label>
-    <label class="check"><input type="checkbox" id="savevideo" checked> Save the video with the record</label>
-    <h2>Camera</h2>
-    <select id="camsel"></select>
-    <p class="small">Side-on to the leg, about 2 m away, level with the knee. The counting box sets itself after six seconds of movement; press Box to draw it.</p>
-    <h2>Log</h2>
-    <div id="log"></div>
-    <div id="rules">Two layers on the same frames, never joined: MediaPipe landmarks give a whole-session knee angle (no repetition segmentation from landmarks, no depth); repetitions come from pixel motion in a box (no key points, no learned model). See CONTRIBUTING.md.</div>
-  </aside>
+    <div class="dayline" id="dayline"></div>
+    <details class="more">
+      <summary>Camera and options</summary>
+      <div class="grid2" style="margin-top:8px">
+        <label class="f">Operated leg<select id="side"><option value="auto">auto (more visible)</option><option value="left">left</option><option value="right">right</option></select></label>
+        <label class="f">Camera<select id="camsel"><option value="">default camera</option></select></label>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="showangle" checked> Show my knee angle</label>
+        <label><input type="checkbox" id="skeleton" checked> Show the skeleton</label>
+        <label><input type="checkbox" id="savevideo" checked> Keep the video</label>
+        <label><input type="checkbox" id="savefiles" checked> Save session files to Downloads</label>
+      </div>
+    </details>
+  </section>
+
+  <section class="phasepick">
+    <span class="eyebrow">Where are you in recovery?</span>
+    <div class="seg" id="seg" role="group" aria-label="Recovery phase">
+      <button data-phase="1" aria-pressed="true">Week 0–1</button>
+      <button data-phase="2" aria-pressed="false">Week 1–4</button>
+      <button data-phase="3" aria-pressed="false">Week 4–8</button>
+      <button data-phase="4" aria-pressed="false">Week 8+</button>
+    </div>
+  </section>
+
+  <section class="list" id="list"></section>
+
+  <section class="card progress" id="progress"></section>
+
+  <div class="safety">
+    <b>Listen to your knee.</b> Mild discomfort is normal; sharp pain is not. Stop and contact your surgeon if you notice fever, calf pain, spreading numbness or wound drainage. This programme supports your physiotherapist's plan; it does not replace it.
+  </div>
+  <p class="foot">Two layers on the same picture, never joined: the skeleton gives a whole-session knee angle, and repetitions are counted from movement in a box round the leg. Nothing here scores your movement; your physiotherapist judges form from the video. <span id="engine"></span> · <a href="report.html">Physio report</a> · <a href="bench.html">Bench view</a></p>
 </main>
 
+<!-- ===================== EXERCISE ===================== -->
+<section id="ex" aria-hidden="true">
+  <div class="stage">
+    <video id="video" playsinline muted></video>
+    <canvas id="canvas"></canvas>
+    <div class="top">
+      <button class="iconbtn" id="back" aria-label="Back">‹</button>
+      <div class="title"><span class="eyebrow" id="exPhase"></span><h2 id="exTitle"></h2></div>
+      <div class="clockwrap"><span class="rec" id="rec" title="recording"></span><span class="num" id="clock">00:00</span></div>
+      <button class="iconbtn" id="boxbtn" title="Draw the counting box: drag on the picture" aria-label="Adjust counting box" disabled>▭</button>
+    </div>
+    <div class="track off" id="track">camera off</div>
+
+    <div class="veil" id="veil">
+      <div class="spin" id="spin"></div>
+      <h3 id="veilTitle">Starting the camera</h3>
+      <p id="veilMsg">The movement model runs on this device. Nothing is sent anywhere.</p>
+      <button class="btn primary" id="veilBtn" style="display:none;margin-top:16px">Try again</button>
+      <div class="small">Allow the camera when the browser asks.</div>
+    </div>
+
+    <div class="brief" id="brief">
+      <div class="grip"></div>
+      <h3 id="briefTitle"></h3>
+      <div class="meta" id="briefMeta"></div>
+      <ol id="briefSteps"></ol>
+      <div class="setup" id="briefSetup"></div>
+      <button class="start" id="briefStart">I'm in position — start</button>
+    </div>
+
+    <div class="done" id="done"></div>
+  </div>
+
+  <aside class="panel">
+    <div class="two">
+      <div class="tile reps" id="repsTile"><div class="lab" id="repsLab">Repetitions</div><div class="val num"><span id="reps">0</span><small id="repsOf"></small></div><div class="sub" id="repsSub">&nbsp;</div></div>
+      <div class="tile angle" id="angleTile"><div class="lab">Knee bend</div><div class="val num"><span id="angle">—</span><small>°</small></div><div class="bar"><div class="zone" id="zone"></div><div class="fill" id="fill"></div></div><div class="sub" id="angleSub">0° is straight</div></div>
+    </div>
+    <div class="tile hold" id="holdTile" style="display:none"><div class="lab">Hold timer</div><div class="ring"><div class="cue" id="holdCue">Get ready</div><div class="count num" id="holdCount"></div></div><div class="sub" id="holdSub"></div></div>
+    <div class="tile instr"><div class="lab">Exercise</div><ol id="instr"></ol></div>
+    <div class="status" id="status">Getting ready…</div>
+    <div class="actions">
+      <button class="btn small" id="reset" disabled>Reset count</button>
+      <button class="btn finish" id="finish" disabled>Finish</button>
+    </div>
+  </aside>
+</section>
+
 <script type="module">
-let PoseLandmarker, FilesetResolver;
-try { ({ PoseLandmarker, FilesetResolver } = await import("./vendor/vision_bundle.mjs")); }
-catch (e) { ({ PoseLandmarker, FilesetResolver } = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs")); }
+import { SOFTWARE, pickSide, AngleTrace, summarise, tracePreview, angleChartSvg, drawSkeleton, drawLeg, loadPose,
+         FlowMonitor, localIso, stampOf, download, daysPostOp, loadRecords, storeRecord, pickRecorderMime } from "./kneerec.js";
 
-// Library, wasm and model are served from this folder (browser/vendor and ../models), so the
-// page works offline. If the model is missing locally the Google-hosted copy is used instead.
-const WASM_LOCAL = "./vendor/wasm";
-const WASM_CDN = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm";
-const MODEL_LOCAL = "../models/pose_landmarker_lite.task";
-const MODEL_CDN = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task";
-const SOFTWARE = "browser-0.1.0";
+/* ---------------- Exercise library ----------------
+   kind 'reps': repetitions come from the pixel-motion counter in kneerec.js.
+   kind 'hold': a plain timer cycles squeeze/relax; the count is timer cycles. The timer is not driven by the video.
+   aim: what the live angle display marks. bend = flexion at or above deg; straight = flexion at or below deg.
+   target: flexion in degrees for the whole-session "time above target" statistic in the record.
+   Nothing in this library scores a repetition or corrects the patient. */
+const LIB = {
+  1: [
+    { id: "quad_set", icon: "flex", title: "Quad sets", tag: "Hold", kind: "hold", hold: 5, rest: 3, count: 10, aim: { kind: "straight", deg: 10 }, target: 90,
+      blurb: "Wake up the thigh muscle and press the knee flat.",
+      steps: ["Sit or lie with your operated leg out straight.", "Tighten the thigh and press the back of the knee down.", "Hold while the timer counts, then relax.", "Repeat with the timer."] },
+    { id: "heel_slide", icon: "slide", title: "Heel slides", tag: "Bend", kind: "reps", count: 10, aim: { kind: "bend", deg: 90 }, target: 90,
+      blurb: "Rebuild your bend by sliding the heel towards you.",
+      steps: ["Lie on your back with the operated leg straight.", "Slide the heel towards you as far as is comfortable.", "Slide back out to straight. That is one repetition.", "Stop short of sharp pain."] },
+    { id: "straight_leg_raise", icon: "lift", title: "Straight leg raise", tag: "Strength", kind: "reps", count: 10, aim: { kind: "straight", deg: 10 }, target: 90,
+      blurb: "Lift the whole leg with the knee straight.",
+      steps: ["Lie flat. Bend the other knee, foot on the bed.", "Keep the operated knee straight and lift the leg about 30 cm.", "Lower with control. That is one repetition."] },
+  ],
+  2: [
+    { id: "heel_slide", icon: "slide", title: "Heel slides", tag: "Bend", kind: "reps", count: 12, aim: { kind: "bend", deg: 100 }, target: 100,
+      blurb: "Work the bend towards 100 degrees.",
+      steps: ["Lie on your back with the operated leg straight.", "Slide the heel towards you, bending as far as is comfortable.", "Return to straight. That is one repetition."] },
+    { id: "seated_extension", icon: "flex", title: "Seated knee extension", tag: "Strength", kind: "reps", count: 12, aim: { kind: "straight", deg: 10 }, target: 90,
+      blurb: "Straighten the knee fully against gravity.",
+      steps: ["Sit tall on a firm chair, feet on the floor.", "Straighten the operated knee until the leg is level.", "Lower slowly. That is one repetition."] },
+    { id: "straight_leg_raise", icon: "lift", title: "Straight leg raise", tag: "Strength", kind: "reps", count: 12, aim: { kind: "straight", deg: 10 }, target: 90,
+      blurb: "Build thigh strength with the knee straight.",
+      steps: ["Lie flat, other knee bent.", "Lift the straight operated leg and pause at the top.", "Lower slowly. That is one repetition."] },
+  ],
+  3: [
+    { id: "heel_slide", icon: "slide", title: "Heel slides, deep bend", tag: "Bend", kind: "reps", count: 12, aim: { kind: "bend", deg: 110 }, target: 110,
+      blurb: "Aim for 110 degrees while keeping full straightening.",
+      steps: ["Lie down with the operated leg straight.", "Pull the heel in as far as is comfortable and pause.", "Straighten fully. That is one repetition."] },
+    { id: "standing_flexion", icon: "stand", title: "Standing knee bend", tag: "Bend", kind: "reps", count: 12, aim: { kind: "bend", deg: 90 }, target: 90,
+      blurb: "Bend the knee behind you, holding a chair.",
+      steps: ["Stand side-on to the camera holding the back of a chair.", "Bend the operated knee, bringing the heel up behind you.", "Lower slowly. That is one repetition."] },
+    { id: "mini_squat", icon: "squat", title: "Mini squat", tag: "Strength", kind: "reps", count: 12, aim: { kind: "bend", deg: 60 }, target: 60,
+      blurb: "A shallow standing bend, holding a counter.",
+      steps: ["Stand side-on to the camera, holding a counter or chair.", "Bend both knees to a shallow squat.", "Stand tall. That is one repetition."] },
+  ],
+  4: [
+    { id: "sit_to_stand", icon: "stand", title: "Sit to stand", tag: "Function", kind: "reps", count: 10, aim: { kind: "bend", deg: 90 }, target: 90,
+      blurb: "Stand up from a chair and sit back down.",
+      steps: ["Sit on a firm chair, side-on to the camera.", "Stand up, then sit back down slowly.", "Use your hands only if you need to. That is one repetition."] },
+    { id: "squat", icon: "squat", title: "Squat", tag: "Strength", kind: "reps", count: 12, aim: { kind: "bend", deg: 90 }, target: 90,
+      blurb: "A deeper, controlled squat with even weight.",
+      steps: ["Stand side-on to the camera, feet hip-width apart.", "Squat towards 90 degrees, weight even on both legs.", "Stand tall. That is one repetition."] },
+    { id: "single_leg_stance", icon: "lift", title: "Single-leg balance", tag: "Hold", kind: "hold", hold: 10, rest: 5, count: 5, aim: { kind: "straight", deg: 15 }, target: 90,
+      blurb: "Balance on the operated leg near a counter.",
+      steps: ["Stand near a counter for safety, side-on to the camera.", "Lift the other foot and balance on the operated leg.", "Hold while the timer counts, then rest."] },
+  ],
+};
+const ICONS = {
+  flex: '<path d="M5 19V5M5 12h9a4 4 0 0 0 4-4"/>',
+  slide: '<path d="M4 17h7l5-9M4 17l3-3"/><circle cx="17" cy="6" r="2"/>',
+  lift: '<path d="M5 20V8M5 8l5 3 9-5"/><circle cx="5" cy="5" r="2"/>',
+  squat: '<path d="M8 4v6l-3 9M16 4v6l3 9M8 10h8"/>',
+  stand: '<path d="M12 6v7l-4 7M12 13l4 7M12 6l4-2"/><circle cx="12" cy="3" r="1.6"/>',
+};
+const PHASES = { 1: "Week 0–1", 2: "Week 1–4", 3: "Week 4–8", 4: "Week 8+" };
+const phaseForDay = d => d === null ? 1 : d < 7 ? 1 : d < 28 ? 2 : d < 56 ? 3 : 4;
+const SETUP = "Camera side-on to the operated leg, about 2 m away, level with the knee, with the whole leg in the picture. Shorts or bare legs help. The counting box sets itself after six seconds of movement.";
+
 const $ = id => document.getElementById(id);
-const log = s => { $("log").textContent = (new Date().toLocaleTimeString() + "  " + s + "\n" + $("log").textContent).slice(0, 4000); };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const NOPOSE = new URLSearchParams(location.search).has("nopose");
 
-/* ---------------- measurement layer (landmarks -> angle -> session statistics) ---------------- */
-const LEFT = { hip: 23, knee: 25, ankle: 27 }, RIGHT = { hip: 24, knee: 26, ankle: 28 };
-function pickSide(lms, w, h, side, minVis) {
-  const leg = idx => {
-    const pts = ["hip", "knee", "ankle"].map(k => lms[idx[k]]);
-    const vis = Math.min(...pts.map(p => p.visibility ?? 0));
-    return { pts: pts.map(p => [p.x * w, p.y * h]), vis };            // x, y only; z is never read
-  };
-  let chosen, s;
-  if (side === "left") { chosen = leg(LEFT); s = "left"; }
-  else if (side === "right") { chosen = leg(RIGHT); s = "right"; }
-  else { const l = leg(LEFT), r = leg(RIGHT); if (l.vis >= r.vis) { chosen = l; s = "left"; } else { chosen = r; s = "right"; } }
-  if (chosen.vis < minVis) return null;
-  return { hip: chosen.pts[0], knee: chosen.pts[1], ankle: chosen.pts[2], visibility: chosen.vis, side: s };
-}
-function kneeFlexionDeg(hip, knee, ankle) {
-  const ax = hip[0] - knee[0], ay = hip[1] - knee[1], bx = ankle[0] - knee[0], by = ankle[1] - knee[1];
-  const na = Math.hypot(ax, ay), nb = Math.hypot(bx, by);
-  if (na < 1e-6 || nb < 1e-6) return NaN;
-  const c = Math.max(-1, Math.min(1, (ax * bx + ay * by) / (na * nb)));
-  return 180 - Math.acos(c) * 180 / Math.PI;
-}
-class AngleTrace {
-  constructor(k = 5) { this.k = k; this.win = []; this.rows = []; }
-  add(frame, t, lm) {
-    let raw = NaN, vis = 0, side = "";
-    if (lm) { raw = kneeFlexionDeg(lm.hip, lm.knee, lm.ankle); vis = lm.visibility; side = lm.side; }
-    let smooth = NaN;
-    if (Number.isNaN(raw)) this.win = [];
-    else { this.win.push(raw); if (this.win.length > this.k) this.win.shift(); smooth = [...this.win].sort((a, b) => a - b)[Math.floor(this.win.length / 2)]; }
-    this.rows.push([frame, t, raw, smooth, vis, side]);
-    return smooth;
-  }
-  csv() { return "frame,t,flexion_raw,flexion_smooth,visibility,side\n" + this.rows.map(r => `${r[0]},${r[1].toFixed(3)},${Number.isNaN(r[2]) ? "" : r[2].toFixed(2)},${Number.isNaN(r[3]) ? "" : r[3].toFixed(2)},${r[4].toFixed(2)},${r[5]}`).join("\n") + "\n"; }
-}
-function summarise(trace, duration, target) {
-  const valid = trace.rows.map(r => r[3]).filter(v => !Number.isNaN(v));
-  const out = { frames_total: trace.rows.length, frames_with_angle: valid.length, peak_flexion_deg: null, p95_flexion_deg: null,
-    min_extension_deg: null, p05_extension_deg: null, time_above_target_s: 0, target_flexion_deg: target, histogram_10deg: {}, side: "", trace_file: "angle.csv" };
-  if (!valid.length) return out;
-  const dt = duration / Math.max(1, trace.rows.length);
-  const s = [...valid].sort((a, b) => a - b), q = p => s[Math.min(s.length - 1, Math.floor(p * (s.length - 1)))];
-  out.peak_flexion_deg = +s[s.length - 1].toFixed(1); out.p95_flexion_deg = +q(0.95).toFixed(1);
-  out.min_extension_deg = +s[0].toFixed(1); out.p05_extension_deg = +q(0.05).toFixed(1);
-  out.time_above_target_s = +(valid.filter(v => v >= target).length * dt).toFixed(1);
-  for (const v of valid) { const b = Math.min(150, Math.floor(Math.max(0, v) / 10) * 10); const k = `${b}-${b + 10}`; out.histogram_10deg[k] = (out.histogram_10deg[k] || 0) + dt; }
-  for (const k in out.histogram_10deg) out.histogram_10deg[k] = +out.histogram_10deg[k].toFixed(1);
-  const sides = trace.rows.map(r => r[5]).filter(Boolean); out.side = sides.length ? sides.sort((a, b) => sides.filter(x => x === b).length - sides.filter(x => x === a).length)[0] : "";
-  return out;
-}
-
-/* ---------------- monitoring layer (pixels -> reps). Receives ImageData only. ---------------- */
-const PW = 160, DIFF_THR = 28, MOVING_FRAC = 0.004, AUTO_BOX_S = 6;
-class RepCounter {
-  constructor(fps) { this.aS = 1 - Math.exp(-1 / (0.15 * fps)); this.aA = 1 - Math.exp(-1 / (8 * fps)); this.reset(); }
-  reset() { this.v = 0; this.amp = 0.5; this.state = 0; this.reps = 0; this.times = []; this.path = 0; this.sizes = []; }
-  update(v, t) {
-    this.v += this.aS * (v - this.v); const s = this.v; this.path += Math.abs(s);
-    if (Math.abs(s) > this.amp) this.amp = Math.abs(s); else this.amp += this.aA * (Math.abs(s) - this.amp);
-    const h = Math.max(0.5, 0.25 * this.amp); let rep = 0;
-    if (s > h) { if (this.state === -1 && (!this.times.length || t - this.times[this.times.length - 1] >= 0.6)) { this.reps++; this.times.push(t); this.sizes.push(this.path); this.path = 0; rep = 1; } this.state = 1; }
-    else if (s < -h) this.state = -1;
-    return [s, rep];
-  }
-  tempo(k = 4) { if (this.times.length < 2) return null; const ts = this.times.slice(-(k + 1)); return (ts[ts.length - 1] - ts[0]) / (ts.length - 1); }
-}
-class FlowMonitor {
-  /* Frame differencing inside a box: the centroid of the pixels that changed tracks the moving leg;
-     its velocity along the principal movement axis is the counting signal. No key points, no model. */
-  constructor(fw, fh, fps) {
-    this.fw = fw; this.fh = fh; this.fps = fps; this.scale = PW / fw; this.ph = Math.round(fh * this.scale);
-    this.box = [Math.floor(fw / 4), Math.floor(fh / 6), Math.floor(fw / 2), Math.floor(fh * 0.75)]; this.locked = false;
-    this.prev = null; this.pc = [NaN, NaN]; this.counter = new RepCounter(fps); this.hist = []; this.rows = [];
-    this.acc = new Float32Array(PW * this.ph); this.accN = 0; this.moving = false; this.signal = 0;
-    this.work = document.createElement("canvas"); this.work.width = PW; this.work.height = this.ph; this.wctx = this.work.getContext("2d", { willReadFrequently: true });
-  }
-  setBox(b) { this.box = b.map(v => Math.round(v)); this.locked = true; this.counter.reset(); this.hist = []; }
-  reset() { this.counter.reset(); this.hist = []; }
-  gray(img) { const d = img.data, n = PW * this.ph, g = new Uint8ClampedArray(n); for (let i = 0; i < n; i++) g[i] = (d[i * 4] * 77 + d[i * 4 + 1] * 150 + d[i * 4 + 2] * 29) >> 8; return g; }
-  update(source, frame, t) {
-    this.wctx.drawImage(source, 0, 0, PW, this.ph);
-    const g = this.gray(this.wctx.getImageData(0, 0, PW, this.ph));
-    if (!this.prev) { this.prev = g; return 0; }
-    const [bx, by, bw, bh] = this.box.map(v => v * this.scale);
-    const x0 = Math.max(0, Math.floor(bx)), y0 = Math.max(0, Math.floor(by)), x1 = Math.min(PW, Math.ceil(bx + bw)), y1 = Math.min(this.ph, Math.ceil(by + bh));
-    let n = 0, sx = 0, sy = 0;
-    for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { const i = y * PW + x; const d = Math.abs(g[i] - this.prev[i]); if (!this.locked) this.acc[i] += d; if (d > DIFF_THR) { n++; sx += x; sy += y; } }
-    if (!this.locked && ++this.accN >= AUTO_BOX_S * this.fps) this.lockFromMotion();
-    this.prev = g;
-    const area = Math.max(1, (x1 - x0) * (y1 - y0)); this.moving = n / area > MOVING_FRAC;
-    let vx = 0, vy = 0;
-    if (n / area >= MOVING_FRAC) { const cx = sx / n, cy = sy / n; if (!Number.isNaN(this.pc[0])) { vx = cx - this.pc[0]; vy = cy - this.pc[1]; } this.pc = [cx, cy]; } else this.pc = [NaN, NaN];
-    // a centroid jump at a turning point is not leg speed: clip to a few times the running amplitude
-    const lim = Math.max(1.5, 3 * this.counter.amp); vx = Math.max(-lim, Math.min(lim, vx)); vy = Math.max(-lim, Math.min(lim, vy));
-    const v = this.axis(vx, vy); const [s, rep] = this.counter.update(v, t); this.signal = s;
-    this.rows.push([frame, t, vx, vy, n / area, s, rep, this.moving ? 1 : 0]);
-    return rep;
-  }
-  axis(vx, vy) {
-    this.hist.push([vx, vy]); if (this.hist.length > 150) this.hist.shift(); if (this.hist.length < 10) return vy;
-    let xx = 0, xy = 0, yy = 0; for (const [a, b] of this.hist) { xx += a * a; xy += a * b; yy += b * b; }
-    const th = 0.5 * Math.atan2(2 * xy, xx - yy); let d = [Math.cos(th), Math.sin(th)];
-    if (Math.abs(d[0]) >= Math.abs(d[1])) { if (d[0] < 0) d = [-d[0], -d[1]]; } else if (d[1] < 0) d = [-d[0], -d[1]];
-    return vx * d[0] + vy * d[1];
-  }
-  lockFromMotion() {
-    const a = this.acc; let vals = Array.from(a).filter(v => v > 0).sort((x, y) => x - y); const thr = vals.length ? vals[Math.floor(vals.length * 0.9)] : 1;
-    let minx = PW, miny = this.ph, maxx = 0, maxy = 0, cnt = 0;
-    for (let y = 0; y < this.ph; y++) for (let x = 0; x < PW; x++) if (a[y * PW + x] >= thr) { cnt++; if (x < minx) minx = x; if (x > maxx) maxx = x; if (y < miny) miny = y; if (y > maxy) maxy = y; }
-    if (cnt > 40 && maxx - minx > 10 && maxy - miny > 10) { const p = 6; this.box = [Math.max(0, minx - p) / this.scale, Math.max(0, miny - p) / this.scale, Math.min(PW, maxx - minx + 2 * p) / this.scale, Math.min(this.ph, maxy - miny + 2 * p) / this.scale].map(Math.round); }
-    this.locked = true;   // count so far is kept
-  }
-  summary(duration) {
-    const n = this.rows.length, active = this.rows.filter(r => r[7]).length, tempo = this.counter.tempo(Math.max(4, this.counter.times.length));
-    return { repetitions: this.counter.reps, tempo_s_per_rep: tempo ? +tempo.toFixed(2) : null, active_fraction: +(active / Math.max(1, n)).toFixed(3),
-      active_time_s: +(active / Math.max(1, n) * duration).toFixed(1), early_stop: false, mean_movement_size: this.counter.sizes.length ? +(this.counter.sizes.reduce((a, b) => a + b, 0) / this.counter.sizes.length).toFixed(1) : 0, box: this.box, trace_file: "flow.csv" };
-  }
-  csv() { return "frame,t,vx,vy,changed_fraction,signal,rep,moving\n" + this.rows.map(r => `${r[0]},${r[1].toFixed(3)},${r[2].toFixed(3)},${r[3].toFixed(3)},${r[4].toFixed(4)},${r[5].toFixed(3)},${r[6]},${r[7]}`).join("\n") + "\n"; }
-}
-
-/* ---------------- session ---------------- */
-const video = $("video"), canvas = $("canvas"), ctx = canvas.getContext("2d");
-let landmarker = null, stream = null, running = false, recorder = null, chunks = [];
-let trace, monitor, t0, frameNo, lastVideoTime = -1, prescribedDone = false, rafId = 0, startedAt, dragging = null;
-let poseMs = 0, poseSkip = 1, lastLm = null, lastAngle = NaN, lastAll = null;
-
+/* ---------------- settings ---------------- */
+const prefs = { patient: "kr_patient", opdate: "kr_opdate", side: "kr_side", camsel: "kr_app_cam" };
+const flags = { showangle: "kr_app_angle", skeleton: "kr_skeleton", savevideo: "kr_app_video", savefiles: "kr_app_files" };
 $("opdate").value = new Date(Date.now() - 14 * 864e5).toISOString().slice(0, 10);
-for (const k of ["patient", "opdate", "exercise", "presc", "target", "side"]) { const v = localStorage.getItem("kr_" + k); if (v !== null) $(k).value = v; $(k).addEventListener("change", () => localStorage.setItem("kr_" + k, $(k).value)); }
-for (const k of ["skeleton", "bench"]) { const v = localStorage.getItem("kr_" + k); if (v !== null) $(k).checked = v === "1"; $(k).addEventListener("change", () => localStorage.setItem("kr_" + k, $(k).checked ? "1" : "0")); }
+for (const k in prefs) { const v = localStorage.getItem(prefs[k]); if (v !== null && (k !== "camsel")) $(k).value = v; $(k).addEventListener("change", () => { localStorage.setItem(prefs[k], $(k).value); if (k === "opdate") { phase = phaseForDay(daysPostOp($("opdate").value, new Date())); renderPhase(); } renderHome(); }); }
+for (const k in flags) { const v = localStorage.getItem(flags[k]); if (v !== null) $(k).checked = v === "1"; $(k).addEventListener("change", () => localStorage.setItem(flags[k], $(k).checked ? "1" : "0")); }
+
+/* ---------------- home ---------------- */
+let phase = +(localStorage.getItem("kr_app_phase") || 0) || phaseForDay(daysPostOp($("opdate").value, new Date()));
+function renderPhase() { [...$("seg").children].forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.phase === phase))); renderList(); }
+function renderList() {
+  $("list").innerHTML = LIB[phase].map((ex, i) => `<button class="ex-card" data-i="${i}">
+    <div class="ic"><svg viewBox="0 0 24 24">${ICONS[ex.icon]}</svg></div>
+    <div><h3>${esc(ex.title)}</h3><p>${esc(ex.blurb)}</p><p class="meta">${ex.kind === "hold" ? `${ex.count} holds of ${ex.hold} s` : `${ex.count} repetitions`}${ex.aim.kind === "bend" ? ` · bend towards ${ex.aim.deg}°` : ""}</p></div>
+    <div class="tag">${esc(ex.tag)}</div></button>`).join("");
+  $("list").querySelectorAll(".ex-card").forEach(b => b.onclick = () => openExercise(LIB[phase][+b.dataset.i]));
+}
+$("seg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; phase = +b.dataset.phase; localStorage.setItem("kr_app_phase", phase); renderPhase(); });
+function renderHome() {
+  const d = daysPostOp($("opdate").value, new Date());
+  $("dayline").innerHTML = d === null ? "Enter your operation date to see where you are in recovery." : d < 0 ? `Operation in <b>${-d}</b> day${-d === 1 ? "" : "s"}.` : `Day <b>${d}</b> after your operation · ${esc(PHASES[phaseForDay(d)])}`;
+  const recs = loadRecords().filter(r => r.patient_id === $("patient").value).sort((a, b) => a.started_at.localeCompare(b.started_at));
+  const last = recs[recs.length - 1];
+  const week = recs.filter(r => (Date.now() - new Date(r.started_at)) < 7 * 864e5).length;
+  const best = recs.map(r => r.measurement?.p95_flexion_deg).filter(v => typeof v === "number");
+  $("progress").innerHTML = `<h2>Your sessions</h2>` + (recs.length ? `<div class="stats"><div><b class="num">${recs.length}</b>on this device</div><div><b class="num">${week}</b>in the last 7 days</div>${best.length ? `<div><b class="num">${Math.max(...best).toFixed(0)}°</b>best bend so far</div>` : ""}</div>
+    <p>Last session ${esc(last.started_at.replace("T", " ").slice(0, 16))}: ${esc(last.exercise.replace(/_/g, " "))}, ${last.hold ? `${last.hold.cycles_completed} holds` : `${last.monitoring.repetitions} repetitions`}${last.measurement.peak_flexion_deg !== null ? `, best bend ${last.measurement.peak_flexion_deg.toFixed(0)}°` : ""}.</p>
+    <p style="margin-top:12px"><a class="linkbtn" href="report.html">See your progress</a></p>` : `<p>No sessions on this device yet. Pick an exercise above to start.</p>`);
+}
+renderPhase(); renderHome();
+
+/* ---------------- pose model: load once, in the background ---------------- */
+let landmarker = null, poseState = NOPOSE ? "off" : "loading", poseInfo = "";
+if (NOPOSE) $("engine").textContent = "Pose model off (?nopose): repetitions only.";
+else loadPose({ log: s => console.log(s) }).then(r => { landmarker = r.landmarker; poseState = "ready"; poseInfo = `${r.library}, ${r.model}`; $("engine").textContent = `Pose model ready (${poseInfo}).`; })
+  .catch(e => { poseState = "failed"; $("engine").textContent = "Pose model failed to load; sessions record repetitions only."; console.warn("MediaPipe: " + e.message); });
 
 async function listCams() {
   try { const devs = await navigator.mediaDevices.enumerateDevices(); const cams = devs.filter(d => d.kind === "videoinput");
-    $("camsel").innerHTML = cams.map((c, i) => `<option value="${c.deviceId}">${c.label || "camera " + (i + 1)}</option>`).join("") || "<option value=''>default camera</option>"; } catch (e) { log("camera list: " + e.message); }
+    const want = localStorage.getItem("kr_app_cam") || "";
+    $("camsel").innerHTML = (cams.length ? cams.map((c, i) => `<option value="${esc(c.deviceId)}">${esc(c.label || "camera " + (i + 1))}</option>`).join("") : "<option value=''>default camera</option>");
+    if ([...$("camsel").options].some(o => o.value === want)) $("camsel").value = want; } catch (e) { }
 }
-async function init() {
-  if (new URLSearchParams(location.search).has("nopose")) { $("status").textContent = "pose disabled (?nopose): reps only"; $("start").disabled = false; await listCams(); return; }
-  // let the session start even if the pose model is slow; the angle layer joins when it is ready
-  const fallback = setTimeout(() => { if (!landmarker) { $("start").disabled = false; $("status").textContent = "pose model still loading; you can start, angle will be missing until it arrives"; } }, 15000);
-  try {
-    // use the local wasm if it is all there, otherwise the same version from the CDN
-    let wasm = WASM_LOCAL;
-    try { const r = await fetch(WASM_LOCAL + "/vision_wasm_internal.wasm", { method: "HEAD" }); if (!r.ok) wasm = WASM_CDN; } catch (e) { wasm = WASM_CDN; }
-    const vision = await FilesetResolver.forVisionTasks(wasm);
-    let model = MODEL_CDN;
-    for (const cand of ["./models/pose_landmarker_lite.task", MODEL_LOCAL]) {
-      try { const r = await fetch(cand, { method: "HEAD" }); if (r.ok) { model = cand; break; } } catch (e) { }
-    }
-    const make = d => PoseLandmarker.createFromOptions(vision, { baseOptions: { modelAssetPath: model, delegate: d }, runningMode: "VIDEO", numPoses: 1, minPoseDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
-    try { landmarker = await make("GPU"); } catch (e) { log("GPU delegate unavailable, using CPU: " + e.message); landmarker = await make("CPU"); }
-    try { const c = document.createElement("canvas"); c.width = 256; c.height = 256; c.getContext("2d").fillRect(0, 0, 256, 256); landmarker.detectForVideo(c, Math.round(performance.now())); } catch (e) { }   // warm up
-    $("status").textContent = "pose model ready"; $("start").disabled = false; log("MediaPipe pose landmarker loaded (" + (wasm === WASM_LOCAL ? "local library" : "library from CDN") + ", " + (model === MODEL_CDN ? "model from Google" : "local model") + ")");
-  } catch (e) { $("status").textContent = "pose model failed to load; sessions will record reps only"; log("MediaPipe: " + e.message); $("start").disabled = false; }
-  clearTimeout(fallback);
-  await listCams();
-}
-init();
+listCams();
 
-async function start() {
+/* ---------------- exercise screen ---------------- */
+const video = $("video"), canvas = $("canvas"), ctx = canvas.getContext("2d");
+let current = null, stream = null, running = false, recorder = null, chunks = [];
+let trace, monitor, t0, frameNo, lastVideoTime = -1, rafId = 0, startedAt, dragging = null, boxMode = false;
+let poseMs = 0, poseSkip = 1, lastLm = null, lastAngle = NaN, lastAll = null, peak = NaN, low = NaN, prescribedDone = false;
+let hold = null;   // { phase: 'hold'|'rest', until, cycles }
+
+async function openExercise(ex) {
+  current = ex; prescribedDone = false; hold = null;
+  $("exPhase").textContent = PHASES[phase]; $("exTitle").textContent = ex.title;
+  $("briefTitle").textContent = ex.title; $("briefMeta").textContent = `${PHASES[phase]} · ${ex.kind === "hold" ? `${ex.count} holds of ${ex.hold} s` : `${ex.count} repetitions`}`;
+  $("briefSteps").innerHTML = ex.steps.map(s => `<li>${esc(s)}</li>`).join(""); $("briefSetup").textContent = SETUP;
+  $("instr").innerHTML = ex.steps.map(s => `<li>${esc(s)}</li>`).join("");
+  $("repsLab").textContent = ex.kind === "hold" ? "Holds" : "Repetitions"; $("reps").textContent = "0"; $("repsOf").textContent = ` / ${ex.count}`; $("repsSub").innerHTML = ex.kind === "hold" ? `${ex.hold} s hold, ${ex.rest} s rest` : "counted from movement in the box";
+  $("holdTile").style.display = ex.kind === "hold" ? "block" : "none"; $("holdCue").textContent = "Get ready"; $("holdCount").textContent = ""; $("holdSub").textContent = "";
+  $("angle").textContent = "—"; $("fill").style.width = "0"; $("angleTile").classList.remove("inzone");
+  const z = $("zone"); if (ex.aim.kind === "bend") { z.style.left = pct(ex.aim.deg) + "%"; z.style.right = "0"; z.style.borderLeft = "2px solid var(--green)"; z.style.borderRight = "none"; $("angleSub").innerHTML = `bend towards <b>${ex.aim.deg}°</b> · 0° is straight`; }
+  else { z.style.left = "0"; z.style.right = (100 - pct(ex.aim.deg)) + "%"; z.style.borderLeft = "none"; z.style.borderRight = "2px solid var(--green)"; $("angleSub").innerHTML = `straight is <b>0°</b>`; }
+  $("angleTile").style.display = $("showangle").checked && poseState !== "off" ? "block" : "none";
+  $("status").textContent = "Get into position, then press start."; $("status").className = "status";
+  $("finish").disabled = true; $("reset").disabled = true; $("boxbtn").disabled = true; $("clock").textContent = "00:00";
+  $("track").textContent = "camera starting"; $("track").className = "track off";
+  $("done").className = "done"; $("done").innerHTML = "";
+  $("brief").classList.remove("up"); $("veil").classList.remove("hide"); $("veilBtn").style.display = "none"; $("spin").style.display = "block";
+  $("veilTitle").textContent = "Starting the camera"; $("veilMsg").textContent = "The movement model runs on this device. Nothing is sent anywhere.";
+  $("ex").classList.add("open"); $("ex").setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden";
+  await openCamera();
+}
+const pct = deg => Math.max(0, Math.min(100, deg / 140 * 100));
+
+async function openCamera() {
   const constraints = { video: { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }, audio: false };
   if ($("camsel").value) constraints.video.deviceId = { exact: $("camsel").value };
-  try { stream = await navigator.mediaDevices.getUserMedia(constraints); } catch (e) { log("camera: " + e.message); return; }
+  try { stream = await navigator.mediaDevices.getUserMedia(constraints); }
+  catch (e) {
+    if (constraints.video.deviceId) { try { delete constraints.video.deviceId; stream = await navigator.mediaDevices.getUserMedia(constraints); } catch (e2) { return cameraFailed(e2); } }
+    else return cameraFailed(e);
+  }
   await listCams();
   video.srcObject = stream; await video.play();
   canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  $("veil").classList.add("hide"); $("brief").classList.add("up");
+  $("track").textContent = "camera on"; $("track").className = "track";
+  preview();
+}
+function cameraFailed(e) {
+  $("spin").style.display = "none"; $("veilTitle").textContent = "Camera needed";
+  $("veilMsg").textContent = "This exercise uses the camera to count repetitions and measure the knee. Allow camera access for this page in the browser, then try again. (" + e.message + ")";
+  $("veilBtn").style.display = "inline-block"; $("veilBtn").onclick = () => { $("veil").classList.remove("hide"); $("veilBtn").style.display = "none"; $("spin").style.display = "block"; openCamera(); };
+}
+/* live picture behind the instructions so the patient can get into position; nothing is measured or recorded yet */
+let previewId = 0;
+function preview() {
+  cancelAnimationFrame(previewId);
+  const step = () => { if (running || !stream) return; previewId = requestAnimationFrame(step); if (video.readyState >= 2) ctx.drawImage(video, 0, 0, canvas.width, canvas.height); };
+  step();
+}
+
+$("briefStart").onclick = startSession;
+function startSession() {
+  if (!stream) return;
+  cancelAnimationFrame(previewId);
   const fps = stream.getVideoTracks()[0].getSettings().frameRate || 30;
   trace = new AngleTrace(5); monitor = new FlowMonitor(canvas.width, canvas.height, fps);
-  frameNo = 0; lastVideoTime = -1; prescribedDone = false; startedAt = new Date(); t0 = performance.now(); poseMs = 0; poseSkip = 1; lastLm = null; lastAngle = NaN; lastAll = null;
-  chunks = [];
+  frameNo = 0; lastVideoTime = -1; prescribedDone = false; startedAt = new Date(); t0 = performance.now(); poseMs = 0; poseSkip = 1; lastLm = null; lastAngle = NaN; lastAll = null; peak = NaN; low = NaN;
+  chunks = []; recorder = null;
   if ($("savevideo").checked && window.MediaRecorder) {
-    const mime = ["video/mp4;codecs=avc1", "video/webm;codecs=vp9", "video/webm"].find(m => MediaRecorder.isTypeSupported(m)) || "";
-    recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined); recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); }; recorder.start(1000); $("rec").style.display = "block";
+    try { const mime = pickRecorderMime(); recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined); recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); }; recorder.start(1000); $("rec").classList.add("on"); } catch (e) { recorder = null; }
   }
-  running = true; $("start").disabled = true; $("finish").disabled = false; $("box").disabled = false; $("reset").disabled = false;
-  for (const id of ["patient", "opdate", "exercise", "presc", "target", "side"]) $(id).disabled = true;
-  $("overlay").style.display = "none"; $("state").textContent = "keep going"; log(`session started ${canvas.width}x${canvas.height} @ ${fps.toFixed(0)} fps`);
+  if (current.kind === "hold") hold = { phase: "hold", until: t0 + current.hold * 1000, cycles: 0 };
+  running = true; $("brief").classList.remove("up"); $("finish").disabled = false; $("reset").disabled = current.kind === "hold"; $("boxbtn").disabled = false;
+  $("status").textContent = current.kind === "hold" ? "Follow the timer." : "Keep going."; $("status").className = "status";
   loop();
 }
 
 function loop() {
   if (!running) return;
   rafId = requestAnimationFrame(loop);
+  step();
+}
+function step() {
+  const now = performance.now(), t = (now - t0) / 1000;
+  if (hold) tickHold(now);
   if (video.currentTime === lastVideoTime) return;
-  lastVideoTime = video.currentTime;
-  const t = (performance.now() - t0) / 1000; frameNo++;
+  lastVideoTime = video.currentTime; frameNo++;
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   // measurement layer: frame -> landmarks -> angle. Gets the frame and the clock only.
-  // On a slow machine the pose model runs on every Nth frame so the counter below still sees every frame.
   let lm = null, angle = NaN;
-  if (landmarker && frameNo % poseSkip === 0) {
+  if (landmarker && frameNo % poseSkip === 0 && video.videoWidth > 0) {
     const t1 = performance.now();
-    const res = landmarker.detectForVideo(video, Math.round(t1));
+    let res = null;
+    try { res = landmarker.detectForVideo(video, Math.round(t1)); } catch (e) { console.warn("pose: " + e.message); }
     poseMs += 0.2 * ((performance.now() - t1) - poseMs); poseSkip = Math.max(1, Math.min(60, Math.ceil(poseMs / 25)));
-    lastAll = (res.landmarks && res.landmarks[0]) ? res.landmarks[0] : null;
+    lastAll = (res && res.landmarks && res.landmarks[0]) ? res.landmarks[0] : null;
     if (lastAll) lm = pickSide(lastAll, canvas.width, canvas.height, $("side").value, 0.5);
     angle = trace.add(frameNo, t, lm); lastLm = lm; lastAngle = angle;
-  } else { lm = lastLm; angle = lastAngle; }
+  } else if (landmarker) { lm = lastLm; angle = lastAngle; }
+  if (!Number.isNaN(angle)) { if (Number.isNaN(peak) || angle > peak) peak = angle; if (Number.isNaN(low) || angle < low) low = angle; }
 
-  // monitoring layer: frame -> reps. Gets the frame and the clock only.
+  // monitoring layer: frame -> repetitions. Gets the frame and the clock only.
   monitor.update(video, frameNo, t);
 
-  const presc = +$("presc").value; if (presc && monitor.counter.reps >= presc) prescribedDone = true;
-  $("reps").textContent = monitor.counter.reps;
+  // screen
+  const count = current.kind === "hold" ? hold.cycles : monitor.counter.reps;
+  if (count >= current.count && !prescribedDone) { prescribedDone = true; $("status").textContent = `That's your ${current.count}. Finish when you're ready, or carry on.`; $("status").className = "status ok"; }
+  if (current.kind !== "hold") $("reps").textContent = count;
   const m = Math.floor(t / 60), s = Math.floor(t % 60); $("clock").textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-  $("leg").textContent = (lm ? "leg in view" : "move so your leg is in view") + (monitor.moving ? " · moving" : " · still"); $("leg").className = lm ? "ok" : "";
-  $("state").textContent = prescribedDone ? "you can stop when you are ready" : "keep going";
+  if (landmarker) { $("track").textContent = lm ? "leg in view" : "move so your whole leg is in the picture"; $("track").className = "track " + (lm ? "ok" : ""); }
+  else { $("track").textContent = poseState === "loading" ? "movement model loading" : "counting movement only"; $("track").className = "track " + (monitor.moving ? "ok" : ""); }
+  if ($("angleTile").style.display !== "none") {
+    $("angle").textContent = Number.isNaN(angle) ? "—" : angle.toFixed(0);
+    $("fill").style.width = Number.isNaN(angle) ? "0" : pct(angle) + "%";
+    const inzone = !Number.isNaN(angle) && (current.aim.kind === "bend" ? angle >= current.aim.deg : angle <= current.aim.deg);
+    $("angleTile").classList.toggle("inzone", inzone);
+    if (!Number.isNaN(peak)) $("angleSub").innerHTML = (current.aim.kind === "bend" ? `bend towards <b>${current.aim.deg}°</b>` : `straight is <b>0°</b>`) + ` · best today <b>${peak.toFixed(0)}°</b>`;
+  }
 
-  if ($("skeleton").checked && lastAll) drawSkeleton(lastAll);
-  const [bx, by, bw, bh] = monitor.box; ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, bh);
-  if ($("bench").checked) {
-    $("angle").style.display = "block"; $("angle").firstChild.textContent = Number.isNaN(angle) ? "--" : angle.toFixed(0);
-    if (lm) { ctx.lineWidth = 6; ctx.strokeStyle = "#ffc832"; ctx.beginPath(); ctx.moveTo(...lm.hip); ctx.lineTo(...lm.knee); ctx.stroke(); ctx.strokeStyle = "#e050ff"; ctx.beginPath(); ctx.moveTo(...lm.knee); ctx.lineTo(...lm.ankle); ctx.stroke();
-      for (const [p, c] of [[lm.hip, "#ffc832"], [lm.knee, "#fff"], [lm.ankle, "#e050ff"]]) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(p[0], p[1], 10, 0, 7); ctx.fill(); }
-      ctx.fillStyle = "#fff"; ctx.font = "18px sans-serif"; ctx.fillText(lm.side, lm.knee[0] + 16, lm.knee[1] - 16); }
-  } else $("angle").style.display = "none";
+  if ($("skeleton").checked && lastAll) drawSkeleton(ctx, lastAll, canvas.width, canvas.height, { line: "rgba(61,220,132,.85)", lineWidth: Math.max(2, canvas.width / 400), radius: Math.max(3, canvas.width / 220) });
+  if ($("showangle").checked && lm) drawLeg(ctx, lm, { thigh: "#3ddc84", shank: "#3ddc84", radius: Math.max(5, canvas.width / 120), lineWidth: Math.max(4, canvas.width / 200), label: false });
+  const [bx, by, bw, bh] = monitor.box; ctx.strokeStyle = "rgba(255,255,255,.3)"; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, bh);
   if (dragging) { ctx.strokeStyle = "#ffe14d"; ctx.setLineDash([8, 6]); ctx.strokeRect(...dragging); ctx.setLineDash([]); }
 }
 
-const POSE_CONNECTIONS = [[0,1],[1,2],[2,3],[3,7],[0,4],[4,5],[5,6],[6,8],[9,10],[11,12],[11,13],[13,15],[15,17],[15,19],[15,21],[17,19],[12,14],[14,16],[16,18],[16,20],[16,22],[18,20],[11,23],[12,24],[23,24],[23,25],[24,26],[25,27],[26,28],[27,29],[28,31],[29,31],[27,31],[30,32],[28,30],[28,32]];
-function drawSkeleton(all) {
-  const W = canvas.width, H = canvas.height;
-  ctx.lineWidth = 3; ctx.strokeStyle = "rgba(80,220,120,.9)";
-  for (const [a, b] of POSE_CONNECTIONS) { const p = all[a], q = all[b]; if (!p || !q || (p.visibility ?? 1) < 0.4 || (q.visibility ?? 1) < 0.4) continue;
-    ctx.beginPath(); ctx.moveTo(p.x * W, p.y * H); ctx.lineTo(q.x * W, q.y * H); ctx.stroke(); }
-  for (const p of all) { if ((p.visibility ?? 1) < 0.4) continue; ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.beginPath(); ctx.arc(p.x * W, p.y * H, 4, 0, 7); ctx.fill(); }
+/* hold exercises: a timer the patient follows. It never looks at the video. */
+function tickHold(now) {
+  const left = Math.max(0, (hold.until - now) / 1000);
+  if (hold.phase === "hold") { $("holdCue").textContent = "Squeeze and hold"; $("holdTile").classList.add("on"); }
+  else { $("holdCue").textContent = "Relax"; $("holdTile").classList.remove("on"); }
+  $("holdCount").textContent = Math.ceil(left) + " s";
+  $("holdSub").textContent = `${hold.cycles} of ${current.count} holds done`;
+  if (left <= 0) {
+    if (hold.phase === "hold") { hold.cycles++; $("reps").textContent = hold.cycles; hold.phase = "rest"; hold.until = now + current.rest * 1000; if (navigator.vibrate) navigator.vibrate(30); }
+    else { hold.phase = "hold"; hold.until = now + current.hold * 1000; }
+  }
 }
 
 async function finish(abandon = false) {
@@ -367,57 +545,76 @@ async function finish(abandon = false) {
   const duration = (performance.now() - t0) / 1000;
   let videoBlob = null;
   if (recorder) { await new Promise(r => { recorder.onstop = r; recorder.stop(); }); videoBlob = new Blob(chunks, { type: recorder.mimeType }); recorder = null; }
-  if (stream) { stream.getTracks().forEach(tr => tr.stop()); stream = null; }
-  $("rec").style.display = "none"; $("finish").disabled = true; $("box").disabled = true; $("reset").disabled = true; $("start").disabled = false;
-  for (const id of ["patient", "opdate", "exercise", "presc", "target", "side"]) $(id).disabled = false;
-  if (abandon) { log("abandoned; nothing saved"); return; }
+  stopCamera();
+  $("rec").classList.remove("on"); $("finish").disabled = true; $("reset").disabled = true; $("boxbtn").disabled = true;
+  if (abandon) return;
 
-  const presc = +$("presc").value || null, target = +$("target").value;
-  const mon = monitor.summary(duration); mon.early_stop = !!(presc && mon.repetitions < presc);
+  const target = current.target ?? 90;
+  const mon = monitor.summary(duration);
+  const count = current.kind === "hold" ? hold.cycles : mon.repetitions;
+  mon.early_stop = count < current.count;
   const op = $("opdate").value || null;
-  const rec = { schema_version: 1, patient_id: $("patient").value, operation_date: op, days_post_op: op ? Math.floor((startedAt - new Date(op)) / 864e5) : null,
-    exercise: $("exercise").value, prescribed_reps: presc, prescribed_minutes: null, started_at: localIso(startedAt), duration_s: +duration.toFixed(1),
+  const rec = { schema_version: 1, patient_id: $("patient").value, operation_date: op, days_post_op: daysPostOp(op, startedAt),
+    exercise: current.id, prescribed_reps: current.count, prescribed_minutes: null, started_at: localIso(startedAt), duration_s: +duration.toFixed(1),
     fps: +(frameNo / Math.max(1, duration)).toFixed(1), video_file: videoBlob ? (videoBlob.type.includes("mp4") ? "video.mp4" : "video.webm") : "",
-    measurement: summarise(trace, duration, target), monitoring: mon, patient: { pain_0_10: null, difficulty_1_5: null, note: "" }, physio: { reviewed: false, note: "", flag: "" }, software_version: SOFTWARE };
+    measurement: summarise(trace, duration, target), monitoring: mon, patient: { pain_0_10: null, difficulty_1_5: null, note: "" }, physio: { reviewed: false, note: "", flag: "" },
+    software_version: SOFTWARE, app: { page: "app.html", phase, aim: current.aim } };
+  if (current.kind === "hold") rec.hold = { hold_s: current.hold, rest_s: current.rest, cycles_completed: hold.cycles };
+  rec.measurement.trace_preview = tracePreview(trace.rows);
 
-  $("overlay").style.display = "flex";
-  $("ov-summary").innerHTML = `<h2>Session done</h2><p>${mon.repetitions} repetitions · ${Math.floor(duration / 60)} min ${Math.floor(duration % 60)} s` + (rec.measurement.peak_flexion_deg !== null ? ` · best bend today ${rec.measurement.peak_flexion_deg.toFixed(0)} degrees` : "") + `</p>`;
-  rec.patient.pain_0_10 = await ask("How painful was that?", "0 = no pain … 9 = worst pain", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  rec.patient.difficulty_1_5 = await ask("How hard was that?", "1 = easy … 5 = very hard", [1, 2, 3, 4, 5]);
-  $("ov-q").style.display = "none";
+  const m = rec.measurement, done = $("done");
+  done.classList.add("show");
+  done.innerHTML = `<div class="inner"><div class="ring"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><h2>Session done</h2>
+    <div class="stats"><div><b class="num">${count}</b>${current.kind === "hold" ? "holds" : "repetitions"}</div><div><b class="num">${Math.floor(duration / 60)}:${String(Math.floor(duration % 60)).padStart(2, "0")}</b>minutes</div>${m.peak_flexion_deg !== null ? `<div><b class="num">${m.peak_flexion_deg.toFixed(0)}°</b>best bend</div><div><b class="num">${m.min_extension_deg.toFixed(0)}°</b>straightest</div>` : ""}</div>
+    ${m.frames_with_angle ? `<div class="chart">${angleChartSvg(trace.rows, 760, 200, true)}</div>` : poseState === "off" || poseState === "failed" ? `<p>The movement model was off, so there is no knee angle for this session. The ${current.kind === "hold" ? "holds" : "repetitions"} were still counted.</p>` : `<p>The leg was not found in the picture this time, so there is no knee angle for this session. The ${current.kind === "hold" ? "holds" : "repetitions"} were still counted.</p>`}
+    <div class="q" id="q"></div></div>`;
+  rec.patient.pain_0_10 = await ask("How painful was that?", "0 = no pain, 9 = worst pain", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  rec.patient.difficulty_1_5 = await ask("How hard was that?", "1 = easy, 5 = very hard", [1, 2, 3, 4, 5]);
 
-  const stamp = startedAt.toISOString().replace(/[-:]/g, "").slice(0, 15).replace("T", "_");
-  const base = `${rec.patient_id}_${stamp}`;
-  download(`${base}_session.json`, new Blob([JSON.stringify(rec, null, 2)], { type: "application/json" }));
-  download(`${base}_angle.csv`, new Blob([trace.csv()], { type: "text/csv" }));
-  download(`${base}_flow.csv`, new Blob([monitor.csv()], { type: "text/csv" }));
-  if (videoBlob) download(`${base}_${rec.video_file}`, videoBlob);
-  const store = JSON.parse(localStorage.getItem("kr_sessions") || "[]"); store.push(rec); localStorage.setItem("kr_sessions", JSON.stringify(store));
-  $("done").style.display = "block"; $("done-text").textContent = `Four files went to your Downloads folder, named ${base}_… . Move them into knee-recovery/sessions/${rec.patient_id}/${stamp}/ (drop the prefix) for the physio report, or open report.html for the browser view.`;
-  log(`saved ${base}: ${mon.repetitions} reps, peak flexion ${rec.measurement.peak_flexion_deg}, angle on ${rec.measurement.frames_with_angle}/${rec.measurement.frames_total} pose frames (pose ${poseMs.toFixed(0)} ms, every ${poseSkip} frame(s))`);
+  const stamp = stampOf(startedAt), base = `${rec.patient_id}_${stamp}`;
+  storeRecord(rec);
+  let where = "Saved on this device.";
+  if ($("savefiles").checked) {
+    download(`${base}_session.json`, new Blob([JSON.stringify(rec, null, 2)], { type: "application/json" }));
+    download(`${base}_angle.csv`, new Blob([trace.csv()], { type: "text/csv" }));
+    download(`${base}_flow.csv`, new Blob([monitor.csv()], { type: "text/csv" }));
+    download(`${base}_angle.svg`, new Blob([angleChartSvg(trace.rows, 900, 260, false)], { type: "image/svg+xml" }));
+    if (videoBlob) download(`${base}_${rec.video_file}`, videoBlob);
+    where = `Saved on this device, and ${videoBlob ? "five" : "four"} files named ${base}_… went to your Downloads folder for your physiotherapist.`;
+  }
+  $("q").innerHTML = `<h3>Saved</h3><p>${esc(where)}</p><div class="row"><a href="#" id="doneBack">Back to exercises</a><a href="report.html">See your progress</a></div>`;
+  $("doneBack").onclick = e => { e.preventDefault(); closeExercise(); };
+  renderHome();
 }
-function localIso(d) { const p = n => String(n).padStart(2, "0"); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; }
 function ask(title, prompt, values) {
   return new Promise(res => {
-    $("ov-q").style.display = "block"; $("ov-title").textContent = title; $("ov-prompt").textContent = prompt;
-    $("ov-scale").innerHTML = values.map(v => `<button data-v="${v}">${v}</button>`).join("");
-    $("ov-scale").querySelectorAll("button").forEach(b => b.onclick = () => res(+b.dataset.v));
-    $("ov-skip").onclick = () => res(null);
+    $("q").innerHTML = `<h3>${esc(title)}</h3><p>${esc(prompt)}</p><div class="scale">${values.map(v => `<button data-v="${v}">${v}</button>`).join("")}</div><button class="skip">skip</button>`;
+    $("q").querySelectorAll(".scale button").forEach(b => b.onclick = () => res(+b.dataset.v));
+    $("q").querySelector(".skip").onclick = () => res(null);
   });
 }
-function download(name, blob) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000); }
+function stopCamera() { cancelAnimationFrame(previewId); if (stream) { stream.getTracks().forEach(tr => tr.stop()); stream = null; } video.srcObject = null; }
+function closeExercise() {
+  if (running) { if (!confirm("Leave this session without saving it?")) return; finish(true); }
+  stopCamera(); running = false;
+  $("ex").classList.remove("open"); $("ex").setAttribute("aria-hidden", "true"); document.body.style.overflow = "";
+  $("done").className = "done"; $("done").innerHTML = ""; renderHome();
+}
 
-/* box drawing */
-let boxMode = false;
-$("box").onclick = () => { boxMode = true; log("drag a box round the leg on the picture"); };
+/* counting box: drag on the picture */
+$("boxbtn").onclick = () => { boxMode = true; $("status").textContent = "Drag a box round the leg on the picture."; };
 canvas.addEventListener("pointerdown", e => { if (!running || !boxMode) return; const p = pos(e); dragging = [p[0], p[1], 0, 0]; });
 canvas.addEventListener("pointermove", e => { if (!dragging) return; const p = pos(e); dragging[2] = p[0] - dragging[0]; dragging[3] = p[1] - dragging[1]; });
-canvas.addEventListener("pointerup", () => { if (!dragging) return; let [x, y, w, h] = dragging; if (w < 0) { x += w; w = -w; } if (h < 0) { y += h; h = -h; } if (w > 20 && h > 20) { monitor.setBox([x, y, w, h]); log(`box set to ${[x, y, w, h].map(Math.round).join(",")}`); } dragging = null; boxMode = false; });
+canvas.addEventListener("pointerup", () => { if (!dragging) return; let [x, y, w, h] = dragging; if (w < 0) { x += w; w = -w; } if (h < 0) { y += h; h = -h; } if (w > 20 && h > 20) { monitor.setBox([x, y, w, h]); $("status").textContent = "Counting box set. The count starts again from 0."; } dragging = null; boxMode = false; });
 function pos(e) { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height]; }
 
-$("start").onclick = start; $("finish").onclick = () => finish(false); $("reset").onclick = () => monitor && monitor.reset();
-$("again").onclick = () => { $("overlay").style.display = "none"; $("done").style.display = "none"; };
-document.addEventListener("keydown", e => { if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return; if (e.key === "q") finish(false); if (e.key === "r") $("box").click(); if (e.key === " ") { e.preventDefault(); monitor && monitor.reset(); } if (e.key === "Escape") finish(true); });
+/* ?debug exposes the live objects for bench checks; nothing in the app reads this */
+if (new URLSearchParams(location.search).has("debug")) window.kr = { get monitor() { return monitor; }, get trace() { return trace; }, get frameNo() { return frameNo; }, get current() { return current; }, get running() { return running; }, video, step };
+
+$("back").onclick = closeExercise;
+$("finish").onclick = () => finish(false);
+$("reset").onclick = () => { if (monitor) { monitor.reset(); $("reps").textContent = "0"; prescribedDone = false; $("status").textContent = "Count reset."; $("status").className = "status"; } };
+document.addEventListener("keydown", e => { if (!$("ex").classList.contains("open") || e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return; if (e.key === "q") finish(false); if (e.key === "r") $("boxbtn").click(); if (e.key === "Escape") closeExercise(); });
 </script>
 </body>
 </html>
