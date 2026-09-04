@@ -121,7 +121,9 @@ if(h===H){try{localStorage.setItem("kr_gate",H);}catch(e){}g.remove();}else{docu
 </main>
 
 <script type="module">
-import { PoseLandmarker, FilesetResolver } from "./vendor/vision_bundle.mjs";
+let PoseLandmarker, FilesetResolver;
+try { ({ PoseLandmarker, FilesetResolver } = await import("./vendor/vision_bundle.mjs")); }
+catch (e) { ({ PoseLandmarker, FilesetResolver } = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs")); }
 
 // Library, wasm and model are served from this folder (browser/vendor and ../models), so the
 // page works offline. If the model is missing locally the Google-hosted copy is used instead.
