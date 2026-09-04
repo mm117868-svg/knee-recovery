@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knee Recovery: report</title>
+<style>
+:root{--bg:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--ink3:#8a8985;--line:#e4e3df;--s1:#2a78d6;--s2:#eb6834;--good:#1a7f37;--warn:#b25e00;--bad:#c0262b;--chip:#f0efec}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px}
+.sub{color:var(--ink2);margin:0 0 16px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+button,select{font-size:14px;padding:6px 10px;border:1px solid #bbb;border-radius:6px;background:#fff}
+.flags{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.flag{padding:6px 10px;border-radius:6px;background:var(--chip);border-left:4px solid var(--warn)}
+.flag.bad{border-left-color:var(--bad)}.flag.good{border-left-color:var(--good)}
+.cal{display:grid;grid-template-columns:repeat(21,1fr);gap:3px;max-width:640px}
+.cal div{aspect-ratio:1;border-radius:3px;background:#ecebe7;position:relative}
+.cal div.s{background:var(--s1)}.cal div.today{outline:2px solid var(--ink);outline-offset:-2px}
+.cal div span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.legend{display:flex;gap:16px;color:var(--ink2);font-size:12px;margin:6px 0 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--ink2);font-weight:600;white-space:nowrap}td.n{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:1px 7px;border-radius:10px;background:var(--chip);font-size:12px}.pill.bad{background:#fbe3e3;color:var(--bad)}.pill.warn{background:#fff1dc;color:var(--warn)}
+svg text{font:11px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;fill:var(--ink2)}
+.note{background:var(--chip);padding:10px 12px;border-radius:6px;color:var(--ink2);font-size:12px}
+.muted{color:var(--ink3)}
+</style>
+</head>
+<body>
+<style>#gate{position:fixed;inset:0;background:#141414;color:#f2f2f2;display:flex;align-items:center;justify-content:center;z-index:9999;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}#gate form{background:#1e1e1e;padding:28px 32px;border-radius:12px;border:1px solid #333;text-align:center;max-width:360px}#gate input{font-size:18px;padding:10px;border-radius:8px;border:1px solid #444;background:#151515;color:#fff;width:100%;box-sizing:border-box;margin:14px 0}#gate button{font-size:16px;padding:10px 18px;border-radius:8px;border:0;background:#3987e5;color:#fff;cursor:pointer}#gate p{color:#b5b5b5;margin:6px 0 0;font-size:13px}</style>
+<div id="gate"><form id="gateform"><div style="font-size:20px;font-weight:600">Cambridge Kinematics</div><p>Test area. Enter the passcode to continue.</p><input id="gatepw" type="password" autocomplete="off" autofocus placeholder="passcode"><button type="submit">Continue</button><p id="gatemsg"></p></form></div>
+<script>
+(function(){const H="b3b19dc58f7aa6e1e21f819f544aa074e3d03fcc0718560ba62877058c462f41";const g=document.getElementById("gate");
+async function sha(s){const b=new TextEncoder().encode(s);const d=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+try{if(localStorage.getItem("kr_gate")===H){g.remove();return;}}catch(e){}
+document.getElementById("gateform").addEventListener("submit",async e=>{e.preventDefault();const v=document.getElementById("gatepw").value;const h=await sha(v);
+if(h===H){try{localStorage.setItem("kr_gate",H);}catch(e){}g.remove();}else{document.getElementById("gatemsg").textContent="Not recognised";}});
+})();
+</script>
+<div class="wrap">
+<h1>Knee Recovery: physio report</h1>
+<p class="sub">Built in the browser from the sessions this browser recorded, plus any <code>session.json</code> files you add. Nothing is sent anywhere.</p>
+<div class="bar">
+  <label>Patient <select id="pid"></select></label>
+  <label><input type="file" id="files" multiple accept=".json"> add session.json files</label>
+  <button id="export">Export all records (JSON)</button>
+  <button id="clear">Forget browser records</button>
+</div>
+<div id="out"></div>
+</div>
+<script>
+const REF = [[0, 60], [7, 75], [14, 90], [28, 100], [42, 110], [90, 120]], BAND = 10, PAIN_FLAG = 7, GAP_DAYS = 2;
+const $ = id => document.getElementById(id), esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let recs = JSON.parse(localStorage.getItem("kr_sessions") || "[]");
+function ref(d) { if (d <= REF[0][0]) return REF[0][1]; for (let i = 0; i < REF.length - 1; i++) { const [d0, v0] = REF[i], [d1, v1] = REF[i + 1]; if (d >= d0 && d <= d1) return v0 + (v1 - v0) * (d - d0) / (d1 - d0); } return REF[REF.length - 1][1]; }
+function render() {
+  const pids = [...new Set(recs.map(r => r.patient_id))].sort();
+  const cur = $("pid").value && pids.includes($("pid").value) ? $("pid").value : pids[0];
+  $("pid").innerHTML = pids.map(p => `<option ${p === cur ? "selected" : ""}>${esc(p)}</option>`).join("");
+  const rs = recs.filter(r => r.patient_id === cur).sort((a, b) => a.started_at.localeCompare(b.started_at));
+  if (!rs.length) { $("out").innerHTML = "<p class='muted'>No sessions yet. Record one in index.html or add session.json files.</p>"; return; }
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const op = rs.find(r => r.operation_date)?.operation_date;
+  let h = `<p class="sub">operation ${esc(op) || "not set"}${op ? " · day " + Math.floor((today - new Date(op)) / 864e5) + " today" : ""} · ${rs.length} session(s)</p>`;
+  h += `<div class="flags">${flags(rs, today).join("")}</div>`;
+  h += `<h2>Sessions, last six weeks</h2>${calendar(rs, today)}`;
+  h += `<h2>Recovery curve</h2>${curve(rs)}`;
+  h += `<h2>Sessions</h2><div style="overflow-x:auto"><table><thead><tr><th>started</th><th>day</th><th>exercise</th><th>reps</th><th>tempo</th><th>active</th><th>peak flex</th><th>extension</th><th>above target</th><th>pain</th><th>difficulty</th></tr></thead><tbody>`;
+  for (const r of [...rs].reverse()) { const m = r.measurement, mo = r.monitoring, p = r.patient;
+    h += `<tr><td>${esc(r.started_at.replace("T", " ").slice(0, 16))}</td><td class="n">${esc(r.days_post_op)}</td><td>${esc(r.exercise)}</td><td class="n">${mo.repetitions}${r.prescribed_reps ? "/" + r.prescribed_reps : ""} ${mo.early_stop ? '<span class="pill warn">early stop</span>' : ""}</td><td class="n">${mo.tempo_s_per_rep ? mo.tempo_s_per_rep.toFixed(1) + " s" : ""}</td><td class="n">${Math.round(mo.active_fraction * 100)}%</td><td class="n">${m.p95_flexion_deg ?? ""}</td><td class="n">${m.p05_extension_deg ?? ""}</td><td class="n">${m.time_above_target_s} s</td><td class="n">${p.pain_0_10 === null ? "" : p.pain_0_10 >= PAIN_FLAG ? `<span class="pill bad">${p.pain_0_10}</span>` : p.pain_0_10}</td><td class="n">${esc(p.difficulty_1_5)}</td></tr>`; }
+  h += `</tbody></table></div><p class="note">Repetitions are counted from pixel motion in a separate layer and are not attached to the angle. The angle traces and videos are in the downloaded files; watch the video to judge how a repetition was done.</p>`;
+  $("out").innerHTML = h;
+}
+function flags(rs, today) {
+  const out = [], last = rs[rs.length - 1], lastDay = new Date(last.started_at.slice(0, 10)), gap = Math.floor((today - lastDay) / 864e5);
+  if (gap >= GAP_DAYS) out.push(`<div class="flag bad">no session for ${gap} days (last ${last.started_at.slice(0, 10)})</div>`);
+  if (last.patient.pain_0_10 !== null && last.patient.pain_0_10 >= PAIN_FLAG) out.push(`<div class="flag bad">pain ${last.patient.pain_0_10}/10 at the last session</div>`);
+  if (last.monitoring.early_stop) out.push(`<div class="flag">last session stopped before the prescription was met</div>`);
+  if (last.days_post_op !== null && last.measurement.p95_flexion_deg !== null && last.measurement.p95_flexion_deg < ref(last.days_post_op) - BAND) out.push(`<div class="flag">peak flexion ${last.measurement.p95_flexion_deg.toFixed(0)} deg is below the reference band for day ${last.days_post_op} (about ${ref(last.days_post_op).toFixed(0)} deg)</div>`);
+  if (!out.length) out.push(`<div class="flag good">nothing flagged</div>`);
+  return out;
+}
+function calendar(rs, today) {
+  const days = {}; for (const r of rs) { const k = r.started_at.slice(0, 10); days[k] = (days[k] || 0) + 1; }
+  let cells = ""; for (let i = 41; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); const k = d.toISOString().slice(0, 10); cells += `<div class="${days[k] ? "s" : ""} ${i === 0 ? "today" : ""}" title="${k}: ${days[k] || 0} session(s)"><span>${d.getDate()}</span></div>`; }
+  return `<div class="cal">${cells}</div><div class="legend"><span><i style="background:var(--s1)"></i>session recorded</span><span><i style="background:#ecebe7"></i>no session</span><span>last six weeks, today outlined</span></div>`;
+}
+function curve(rs) {
+  const pts = rs.filter(r => r.days_post_op !== null && r.measurement.p95_flexion_deg !== null).map(r => [r.days_post_op, r.measurement.p95_flexion_deg, r.measurement.p05_extension_deg, r.started_at.slice(0, 10)]);
+  if (!pts.length) return "<p class='muted'>no sessions with an operation date and an angle yet</p>";
+  const w = 760, h = 300, L = 48, R = 20, T = 16, B = 34, pw = w - L - R, ph = h - T - B, ymax = 140, dmax = Math.max(90, Math.max(...pts.map(p => p[0])) + 3);
+  const X = d => L + pw * d / dmax, Y = v => T + ph * (1 - v / ymax);
+  let band = ""; for (let d = 0; d <= dmax; d++) band += `${X(d).toFixed(1)},${Y(ref(d) + BAND).toFixed(1)} `; for (let d = Math.floor(dmax); d >= 0; d--) band += `${X(d).toFixed(1)},${Y(ref(d) - BAND).toFixed(1)} `;
+  let grid = ""; for (let g = 0; g <= ymax; g += 20) grid += `<line x1="${L}" x2="${w - R}" y1="${Y(g)}" y2="${Y(g)}" stroke="#e4e3df"/><text x="${L - 8}" y="${Y(g) + 4}" text-anchor="end">${g}</text>`;
+  let xt = ""; for (let d = 0; d <= dmax; d += 14) xt += `<text x="${X(d)}" y="${h - 12}" text-anchor="middle">${d}</text>`;
+  const s1 = pts.map(p => `${X(p[0])},${Y(p[1])}`).join(" "), s2 = pts.filter(p => p[2] !== null).map(p => `${X(p[0])},${Y(p[2])}`).join(" ");
+  const marks = pts.map(p => `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4" fill="var(--s1)" stroke="#fcfcfb" stroke-width="2"><title>${p[3]}, day ${p[0]}: peak flexion ${p[1].toFixed(0)} deg</title></circle>` + (p[2] !== null ? `<circle cx="${X(p[0])}" cy="${Y(p[2])}" r="4" fill="var(--s2)" stroke="#fcfcfb" stroke-width="2"><title>${p[3]}, day ${p[0]}: extension ${p[2].toFixed(0)} deg</title></circle>` : "")).join("");
+  const last = pts[pts.length - 1];
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="recovery curve"><polygon points="${band}" fill="#e9eef7"/>${grid}${xt}<polyline fill="none" stroke="var(--s1)" stroke-width="2" points="${s1}"/><polyline fill="none" stroke="var(--s2)" stroke-width="2" points="${s2}"/>${marks}<text x="${X(last[0]) + 8}" y="${Y(last[1]) + 4}" fill="#0b0b0b">peak flexion</text>${last[2] !== null ? `<text x="${X(last[0]) + 8}" y="${Y(last[2]) + 4}" fill="#0b0b0b">extension</text>` : ""}<text x="${L + pw / 2}" y="${h - 1}" text-anchor="middle">days after operation</text></svg>
+  <div class="legend"><span><i style="background:var(--s1)"></i>peak flexion (95th percentile of the session)</span><span><i style="background:var(--s2)"></i>extension (5th percentile; 0 is straight)</span><span><i style="background:#e9eef7"></i>illustrative reference band, set per patient</span></div>`;
+}
+$("pid").onchange = render;
+$("files").onchange = async e => { for (const f of e.target.files) { try { const r = JSON.parse(await f.text()); if (r.schema_version && r.patient_id) recs.push(r); } catch (err) { } } localStorage.setItem("kr_sessions", JSON.stringify(recs)); render(); };
+$("export").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(recs, null, 2)], { type: "application/json" })); a.download = "knee_recovery_records.json"; a.click(); };
+$("clear").onclick = () => { if (confirm("Forget all session records stored in this browser? Downloaded files are not affected.")) { recs = []; localStorage.removeItem("kr_sessions"); render(); } };
+render();
+</script>
+</body>
+</html>
